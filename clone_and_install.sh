@@ -1,11 +1,12 @@
 home="/home/test"
 arcus_dir="$home/arcus"
 clone_EE=0
-clone_open=1
+clone_open=0
 clone_java=0
 clone_c=0
+clone_misc=1
 
-if [ -f "$arcus_dir" ]; then
+if [ -d "$arcus_dir" ]; then
   echo "arcus exists"
 else
   echo -e "no arcus project.. install it"
@@ -124,4 +125,30 @@ then
     make
     cd ..
   done
+fi
+
+if [ $clone_misc = 1 ]
+then
+  cd $HOME
+  filename="arcus-misc-enterprise"
+  if [ -d "$filename" ]; then
+    echo "$filename folder exists"
+  else
+    cloneCmd="git clone https://github.com/SuhwanJang/arcus-misc.git $filename"
+    cloneCmdRun=$($cloneCmd 2>&1)
+    echo -e "Running: \n$ $cloneCmd"
+    echo -e "${cloneCmdRun}\n\n"
+    cd $filename
+  fi
+  cd $HOME
+  filename="arcus-misc-community"
+  if [ -d "$filename" ]; then
+    echo "$filename folder exists"
+  else
+    cloneCmd="git clone https://github.com/SuhwanJang/arcus-misc.git $filename"
+    cloneCmdRun=$($cloneCmd 2>&1)
+    echo -e "Running: \n$ $cloneCmd"
+    echo -e "${cloneCmdRun}\n\n"
+    cd $filename
+  fi
 fi

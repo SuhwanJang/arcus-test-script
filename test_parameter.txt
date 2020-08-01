@@ -1,0 +1,10 @@
+username=test
+host=jam2in-m001:11617,jam2in-s001:11615,jam2in-s002:11616
+zookeeper=10.34.35.122:2195,10.34.32.171:2195,10.33.137.55:2195
+community_ports=11500,11501
+enterprise_ports=11700,11701,11800,11801
+enterprise_master_ports=11700,11800
+enterprise_slave_ports=11701,11801
+
+# memcached
+memlimit=800

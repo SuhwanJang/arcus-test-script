@@ -1,0 +1,101 @@
+{
+"jam2in-m001":
+  [
+    {
+      "type": "community",
+      "port": "11500",
+      "version": "develop"
+    },
+    {
+      "type": "community",
+      "port": "11501",
+      "version": "1.12.1"
+    },
+    {
+      "type": "enterprise-master",
+      "port": "11800",
+      "version": "0.7.8-E"
+    },
+    {
+      "type": "enterprise-master",
+      "port": "11700",
+      "version": "develop"
+    },
+    {
+      "type": "enterprise-slave",
+      "port": "11801",
+      "version": "0.7.8-E"
+    },
+    {
+      "type": "enterprise-slave",
+      "port": "11701",
+      "version": "0.8.1-E"
+    }
+  ],
+"jam2in-s001":
+  [
+    {
+      "type": "community",
+      "port": "11500",
+      "version": "1.12.0"
+    },
+    {
+      "type": "community",
+      "port": "11501",
+      "version": "1.11.8"
+    },
+    {
+      "type": "enterprise-master",
+      "port": "11800",
+      "version": "0.8.0-E"
+    },
+    {
+      "type": "enterprise-master",
+      "port": "11700",
+      "version": "develop"
+    },
+    {
+      "type": "enterprise-slave",
+      "port": "11801",
+      "version": "0.8.0-E"
+    },
+    {
+      "type": "enterprise-slave",
+      "port": "11701",
+      "version": "develop"
+    }
+  ],
+"jam2in-s002":
+  [
+    {
+      "type": "community",
+      "port": "11500",
+      "version": "1.11.7"
+    },
+    {
+      "type": "community",
+      "port": "11501",
+      "version": "1.11.6"
+    },
+    {
+      "type": "enterprise-master",
+      "port": "11800",
+      "version": "0.8.0-E"
+    },
+    {
+      "type": "enterprise-master",
+      "port": "11700",
+      "version": "0.8.1-E"
+    },
+    {
+      "type": "enterprise-slave",
+      "port": "11801",
+      "version": "0.7.8-E"
+    },
+    {
+      "type": "enterprise-slave",
+      "port": "11701",
+      "version": "0.8.1-E"
+    }
+  ]
+}

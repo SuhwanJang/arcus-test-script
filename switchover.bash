@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function check_cpustat() {
+function check_slavecpu() {
   durable=5
   sum=0
   requests=3
@@ -30,7 +30,7 @@ function check_cpustat() {
   done
   let "sum/=requests"
   if [ $sum -gt 70 ]; then
-    echo "high cpu stat host=$1:$2"
+    echo "slave cpu usage is too high. host=$1:$2"
     return 1;
   fi
   return 0;
@@ -95,12 +95,12 @@ do
   then
     if  [ `expr $COUNTER % 2` == 1 ];
     then
-      if check_cpustat "127.0.0.1" $master_port; then
+      if check_slavecpu $slave_hostname $slave_port; then
         echo ">>>>>> execute switchover host=127.0.0.1:$master_port"
         echo "replication switchover" | nc localhost $master_port 2> $can_test_failure
       fi
     else
-      if check_cpustat $slave_hostname $slave_port; then
+      if check_slavecpu 127.0.0.1 $master_port; then
         echo ">>>>>> execute switchover host=$slave_hostname:$slave_port"
         ssh $slave_hostname /bin/bash << EOF
         echo "replication switchover" | nc localhost $slave_port 2> $can_test_failure
