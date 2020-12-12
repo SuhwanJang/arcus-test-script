@@ -1,16 +1,17 @@
-source ./helper.sh 
+source ./helper.sh
 function run_memcached {
-  memlimit=$(read_memlimit)
+  #memlimit=$(read_memlimit)
+  memlimit=800
   mtype=$1
   port=$2
-  version=$(get_version $host $mtype $port)
+  version=$(get_memcached_version $host $mtype $port)
   echo "port=$port version=$version"
   if [ $mtype == "community" ]; then
     cd $HOME/arcus-memcached-version/$version
   else
     cd $HOME/arcus-memcached-EE-version/$version
   fi
-  ./memcached -d -v -r -I 3M -X .libs/syslog_logger.so -X .libs/ascii_scrub.so -p $port -m $memlimit -z $zookeeper -E .libs/default_engine.so
+  ./memcached -d -v -r -X .libs/syslog_logger.so -X .libs/ascii_scrub.so -p $port -m $memlimit -z $zookeeper -E .libs/default_engine.so
   cd $HOME
 }
 

@@ -1,9 +1,10 @@
-file=test_parameter.txt
-filedir=$HOME/arcus-test-script
+client_logdir="/data/long_running_test_logs"
+filename="test_parameter.txt"
+filedir="$HOME/arcus-test-script"
 read_line=""
 function read_test_parameter {
-  if [ ! -f "$file" ]; then
-    echo "$file is not exist";
+  if [ ! -f "$filename" ]; then
+    echo "$filename is not exist";
     exit;
   fi
   while read line
@@ -12,9 +13,9 @@ function read_test_parameter {
       read_line="$line"
       break;
     fi
-  done < $file
+  done < $filename
 }
-      
+
 function read_host {
   keyword="host="
   read_test_parameter $keyword
@@ -31,12 +32,12 @@ function get_hostport {
   done
 }
 
-function get_version {
-  echo "$(jq -r --arg hostname "$1" --arg mtype "$2" --arg port "$3" '.[$hostname][] | select(.type == $mtype and .port == $port) .version' $filedir/test.json)"
+function get_memcached_version {
+  echo "$(jq -r --arg hostname "$1" --arg mtype "$2" --arg port "$3" '.[$hostname][] | .[$mtype][] | select(.port==$port) .version' $filedir/memcached.json)"
 }
 
 function get_client_version {
-  echo "$(jq -r --arg hostname "$1" --arg mtype "$2" --arg client "$3" '.[$hostname][] | select(.type == $mtype and .client == $client) .version' $filedir/client.json)"
+  echo "$(jq -r --arg hostname "$1" --arg mtype "$2" --arg client "$3" '.[$hostname][] | .[$client][] | select(.type == $mtype) .version' $filedir/client.json)"
 }
 
 function read_memlimit {
@@ -82,6 +83,8 @@ function read_enterprise_slave_ports {
 }
 
 function transfer_file {
+  scp -P $(get_hostport $1) "client.json" $username@211.249.63.38:/$filedir
+  scp -P $(get_hostport $1) "memcached.json" $username@211.249.63.38:/$filedir
   scp -P $(get_hostport $1) "helper.sh" $username@211.249.63.38:/$filedir
   scp -P $(get_hostport $1) "test_parameter.txt" $username@211.249.63.38:/$filedir
   scp -P $(get_hostport $1) $2 $username@211.249.63.38:/$filedir
@@ -96,4 +99,7 @@ enterprise_slave_ports=$(read_enterprise_slave_ports)
 
 local_host=$(read_host)
 IFS=',' read -r -a local_hostarray <<< "$local_host"
-#get_version "jam2in-m001" "community" "11500"
+
+#DEBUG
+#get_memcached_version "jam2in-m001" "enterprise-master" "11500"
+#get_client_version "jam2in-s002" "enterprise" "c"

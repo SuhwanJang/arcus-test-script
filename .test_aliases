@@ -1,0 +1,4 @@
+alias tps=$HOME/arcus-test-script/./show_processes.sh
+alias tcmi='cat $HOME/arcus-test-script/cluster_machines_info'
+alias tmj='cat $HOME/arcus-test-script/memcached.json'
+alias tcj='cat $HOME/arcus-test-script/client.json'

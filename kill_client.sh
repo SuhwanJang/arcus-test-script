@@ -2,7 +2,7 @@ source ./helper.sh
 
 function kill_c_client {
   mtype=$1
-  pids=($(ps -ef | grep -v "grep" | grep "./acp -config config-standard.txt" | grep "test" | awk '{ print $2 }'))
+  pids=($(ps -ef | grep -v "grep" | grep "acp-c/config-standard.txt" | grep "test" | awk '{ print $2 }'))
   if [ ${#pids[@]} -eq 0 ]; then
     return;
   fi
@@ -17,9 +17,9 @@ function kill_c_client {
   done
 }
 
-function kill_java_clients {
+function kill_java_client {
   mtype=$1
-  pids=($(ps -ef | grep -v "grep" | grep "acp -config config-arcus-integration" | grep "test" | awk '{ print $2 }'))
+  pids=($(ps -ef | grep -v "grep" | grep "acp-java/config-arcus-integration.txt" | grep "test" | awk '{ print $2 }'))
   if [ ${#pids[@]} -eq 0 ]; then
     return;
   fi
@@ -29,7 +29,6 @@ function kill_java_clients {
     if [[ $ps_mtype == *$mtype* ]]; then
       result=$(kill -9 $pid)
       echo "java client is killed. pid=$pid, host=$host, fd=$ps_mtype"
-      break;
     fi
   done
 }
@@ -54,8 +53,8 @@ function ask_c_client {
   select input in "All" "Enterprise" "Community"; do
     case $input in
         All ) kill_all_c_clients; break;;
-        Enterprise ) kill_c_client "community"; break;;
-        Community ) kill_c_client "enterprise"; break;;
+        Enterprise ) kill_c_client "enterprise"; break;;
+        Community ) kill_c_client "community"; break;;
     esac
   done
 }
@@ -65,8 +64,8 @@ function ask_java_client {
   select input in "All" "Enterprise" "Community"; do
     case $input in
         All ) kill_all_java_clients; break;;
-        Enterprise ) kill_java_client "community"; break;;
-        Community ) kill_java_client "enterprise"; break;;
+        Enterprise ) kill_java_client "enterprise"; break;;
+        Community ) kill_java_client "community"; break;;
     esac
   done
 }

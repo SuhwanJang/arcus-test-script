@@ -4,17 +4,18 @@ ENTERPRISE_DIR="$HOME/arcus-misc-enterprise"
 COMMUNITY_SERVICE_CODE="long_running_community"
 ENTERPRISE_SERVICE_CODE="long_running_replication"
 service_code=""
-client=4
+client=5
 rate=200
 request=0
 ttime=0
 key_prefix=""
-keyset_size=50
+keyset_size=50000
 valueset_min_size=50
 valueset_max_size=100
 pool=1
 pool_size=16
 config=""
+client_profile=""
 
 function setting_config {
  ## config file
@@ -35,8 +36,11 @@ function setting_config {
 }
 
 function run_c_client {
-  key_prefix="c-$host"
-  config="config-standard.txt"
+  key_prefix="c-$host:"
+  arcus_dir="$HOME/arcus"
+  configname="config-standard.txt"
+  client_profile="standard_mix"
+  pool_size=32
   mtype=$1
   local dir=""
   if [ $mtype == "community" ]; then
@@ -46,12 +50,14 @@ function run_c_client {
     dir="$ENTERPRISE_DIR/acp-c"
     service_code=$ENTERPRISE_SERVICE_CODE
   fi
+  config="$dir/$configname"
   setting_config
 
   sed -i "s/^BASEDIR.*/BASEDIR=\/home\/test\/arcus/" $dir/Makefile
 
   cdir=$HOME/arcus-c-client-version
   version=$(get_client_version $host $mtype "c")
+  echo "install c-client in $cdir/$version"
   cd $cdir/$version
   ./config/autorun.sh
   ./configure --prefix=$arcus_dir --enable-zk-integration --with-zookeeper=$arcus_dir
@@ -60,15 +66,18 @@ function run_c_client {
   cd $dir
   make
 
-  echo "run acp-c with nohup. path=$dir host=$host version=$version"
+  logpath="$client_logdir/$mtype/c/nohup.out"
+  echo "run acp-c with nohup. path=$dir host=$host version=$version logpath=$logpath"
   cd $dir
-  nohup ./acp -config $config >> nohup.out &
+  nohup ./acp -config $config >> $logpath &
   sleep 10
 }
 
 function run_java_client {
-  key_prefix="java-$host"
-  config="config-arcus-integration.txt"
+  key_prefix="java-$host:"
+  configname="config-arcus-integration.txt"
+  client_profile="torture_arcus_integration"
+  pool_size=16
   mtype=$1
   local dir=""
   if [ $mtype == "community" ]; then
@@ -78,20 +87,21 @@ function run_java_client {
     dir="$ENTERPRISE_DIR/acp-java"
     service_code=$ENTERPRISE_SERVICE_CODE
   fi
+  config="$dir/$configname"
   setting_config
-
-  sed -i "s/^BASEDIR.*/BASEDIR=\/home\/test\/arcus/" $dir/Makefile
 
   javadir=$HOME/arcus-java-client-version
   version=$(get_client_version $host $mtype "java")
+  echo "install java-client in $javadir/$version"
   cd $javadir/$version
-  mvn clean install -DskipTests=true
+  #mvn clean install -DskipTests=true
   cd $dir
   ./compile.bash
 
-  echo "run acp-java with nohup. path=$dir host=$host version=$version"
+  logpath="$client_logdir/$mtype/java/nohup.out"
+  echo "run acp-java with nohup. path=$dir host=$host version=$version logpath=$logpath"
   cd $dir
-  nohup ./run.bash -config $config >> nohup.out &
+  nohup ./run.bash -config $config | ts >> $logpath &
   sleep 10
 }
 
@@ -115,8 +125,8 @@ function ask_c_client {
   select input in "All" "Enterprise" "Community"; do
     case $input in
         All ) run_all_c_clients; break;;
-        Enterprise ) run_c_client "community"; break;;
-        Community ) run_c_client "enterprise"; break;;
+        Enterprise ) run_c_client "enterprise"; break;;
+        Community ) run_c_client "community"; break;;
     esac
   done
 }
@@ -126,8 +136,8 @@ function ask_java_client {
   select input in "All" "Enterprise" "Community"; do
     case $input in
         All ) run_all_java_clients; break;;
-        Enterprise ) run_java_client "community"; break;;
-        Community ) run_java_client "enterprise"; break;;
+        Enterprise ) run_java_client "enterprise"; break;;
+        Community ) run_java_client "community"; break;;
     esac
   done
 }

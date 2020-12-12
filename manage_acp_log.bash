@@ -1,8 +1,9 @@
 logfile="nohup.out"
-java_enterprise=$HOME/arcus-misc-enterprise/acp-java
-c_enterprise=$HOME/arcus-misc-enterprise/acp-c
-java_community=$HOME/arcus-misc-community/acp-java
-c_community=$HOME/arcus-misc-community/acp-c
+client_logdir="/data/long_running_test_logs"
+java_enterprise=$client_logdir/enterprise/java
+c_enterprise=$client_logdir/enterprise/c
+java_community=$client_logdir/community/java
+c_community=$client_logdir/community/c
 host1="jam2in-m001"
 host2="jam2in-s001"
 host3="jam2in-s002"
@@ -25,13 +26,13 @@ function check_connection() {
 }
 
 function check_truncate() {
-  running_c=`ps -ef | grep -v "grep" | grep "config-standard" | wc -l` 
-  running_java=`ps -ef | grep -v "grep" | grep "acp -config config-arcus-integration" | wc -l` 
+  running_c=`ps -ef | grep -v "grep" | grep "acp-c/config-standard.txt" | wc -l` 
+  running_java=`ps -ef | grep -v "grep" | grep "acp-java/config-arcus-integration" | wc -l` 
   if [[ $1 = 1 && $running_c -ge 2 && $running_java -ge 2 ]]; then
     res=0
     return;
   fi
-  echo "don't truncate log file. need to check error. $1, $running_c, $running_java"
+  echo "don't truncate log file. need to check error. $1, alive_c=$running_c, alive_java=$running_java"
   res=1
 }
 
@@ -48,8 +49,8 @@ function truncate_file() {
     touch $logdir/$truncated_log
   fi
 
-#2G
-  tlimit=2000000000 
+#10G
+  tlimit=10000000000 
   filesize=`wc -c $logdir/$truncated_log | awk '{print $1}'`
   if [ $? -eq 0 ]; then
     if [ $filesize -ge $tlimit ]; then
@@ -58,8 +59,8 @@ function truncate_file() {
     fi
   fi
 
-#500M
-  limit=500000000 
+#1G
+  limit=1000000000 
   filesize=`wc -c $logfile | awk '{print $1}'`
   if [ $filesize -ge $limit ]; then
     c_line="disabled=0 no_server=0 client=0 other=0|SCREAM"

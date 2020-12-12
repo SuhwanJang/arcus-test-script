@@ -1,71 +1,74 @@
 {
-"jam2in-m001":
-  [
+  "jam2in-m001": [
     {
-      "type": "enterprise",
-      "client": "java",
-      "version": "develop"
-    },
-    {
-      "type": "community",
-      "client": "java",
-      "version": "1.12.0"
-    },
-    {
-      "type": "enterprise",
-      "client": "c",
-      "version": "develop"
-    },
-    {
-      "type": "community",
-      "client": "c",
-      "version": "1.10.4"
-    },
+      "java": [
+        {
+          "type": "enterprise",
+          "version": "develop"
+        },
+        {
+          "type": "community",
+          "version": "1.11.5"
+        }
+      ],
+      "c": [
+        {
+          "type": "enterprise",
+          "version": "develop"
+        },
+        {
+          "type": "community",
+          "version": "1.12.0"
+        }
+      ]
+    }
   ],
-"jam2in-s001":
-  [
+  "jam2in-s001": [
     {
-      "type": "enterprise",
-      "client": "java",
-      "version": "1.11.5"
-    },
-    {
-      "type": "community",
-      "client": "java",
-      "version": "1.11.4"
-    },
-    {
-      "type": "enterprise",
-      "client": "c",
-      "version": "1.10.1"
-    },
-    {
-      "type": "community",
-      "client": "c",
-      "version": "1.9.0"
-    },
+      "java": [
+        {
+          "type": "enterprise",
+          "version": "1.12.1"
+        },
+        {
+          "type": "community",
+          "version": "1.11.4"
+        }
+      ],
+      "c": [
+        {
+          "type": "enterprise",
+          "version": "1.10.5"
+        },
+        {
+          "type": "community",
+          "version": "1.10.4"
+        }
+      ]
+    }
   ],
-"jam2in-s002":
-  [
+  "jam2in-s002": [
     {
-      "type": "enterprise",
-      "client": "java",
-      "version": "1.11.3"
-    },
-    {
-      "type": "community",
-      "client": "java",
-      "version": "1.12.1"
-    },
-    {
-      "type": "enterprise",
-      "client": "c",
-      "version": "1.8.0"
-    },
-    {
-      "type": "community",
-      "client": "c",
-      "version": "1.10.3"
+      "java": [
+        {
+          "type": "enterprise",
+          "version": "1.12.0"
+        },
+        {
+          "type": "community",
+          "version": "1.11.3"
+        }
+      ],
+      "c": [
+        {
+          "type": "enterprise",
+          "version": "1.10.3"
+        },
+        {
+          "type": "community",
+          "version": "1.10.2"
+        }
+      ]
     }
   ]
 }

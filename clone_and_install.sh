@@ -26,11 +26,12 @@ then
   cd $HOME/arcus-memcached-version
 
   #clone arcus-memcached-$version
-  versions=("develop" "1.12.1" "1.12.0")
+  versions=("develop")
   for version in "${versions[@]}"; do
     if [ -d "$version" ]; then
         echo "arcus-memcached $version exist"
-        continue
+        #continue
+        rm -rf $version
     fi
     cloneCmd="git clone -b $version https://github.com/naver/arcus-memcached.git $version"
     if [ $version = "develop" ]; then
@@ -40,6 +41,9 @@ then
     echo -e "Running: \n$ $cloneCmd"
     echo -e "${cloneCmdRun}\n\n"
     cd $version
+    if [ $version = "develop" ]; then
+      git checkout develop
+    fi
     ./config/autorun.sh
     ./configure --prefix=$arcus_dir --enable-zk-integration --with-libevent=$arcus_dir --with-zookeeper=$arcus_dir
     make
@@ -57,7 +61,8 @@ then
   for version in "${versions[@]}"; do
     if [ -d "$version" ]; then
         echo "arcus-memcached-EE $version exist"
-        continue
+        #continue
+        rm -rf $version
     fi
     cloneCmd="git clone -b $version https://github.com/jam2in/arcus-memcached-EE.git $version"
     if [ $version = "develop" ]; then
@@ -67,8 +72,12 @@ then
     echo -e "Running: \n$ $cloneCmd"
     echo -e "${cloneCmdRun}\n\n"
     cd $version
+    if [ $version = "develop" ]; then
+      git checkout memc_repl_dev
+    fi
     ./config/autorun.sh
     ./configure --prefix=$arcus_dir --enable-zk-integration --with-libevent=$arcus_dir --with-zookeeper=$arcus_dir --enable-replication
+    sed -i "s/^AM_CFLAGS.*/AM_CFLAGS = -fvisibility=hidden -pthread -g -O2 -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -fno-strict-aliasing/g" Makefile
     make
     cd ..
   done
@@ -84,7 +93,8 @@ then
   for version in "${versions[@]}"; do
     if [ -d "$version" ]; then
         echo "arcus-java-client $version exist"
-        continue
+        rm -rf $version
+        #continue
     fi
     cloneCmd="git clone -b $version https://github.com/naver/arcus-java-client.git $version"
     if [ $version = "develop" ]; then
@@ -94,6 +104,9 @@ then
     echo -e "Running: \n$ $cloneCmd"
     echo -e "${cloneCmdRun}\n\n"
     cd $version
+    if [ $version = "develop" ]; then
+      git checkout develop
+    fi
     mvn clean install -DskipTests=true
     cd ..
   done
@@ -106,11 +119,12 @@ then
   cd $HOME/arcus-c-client-version
 
   #clone arcus-c-client-$version
-  versions=("develop" "1.10.3" "1.10.1")
+  versions=("develop" "1.12.0")
   for version in "${versions[@]}"; do
     if [ -d "$version" ]; then
         echo "arcus-c-client $version exist"
-        continue
+        rm -rf $version
+        #continue
     fi
     cloneCmd="git clone -b $version https://github.com/naver/arcus-c-client.git $version"
     if [ $version = "develop" ]; then
@@ -120,9 +134,13 @@ then
     echo -e "Running: \n$ $cloneCmd"
     echo -e "${cloneCmdRun}\n\n"
     cd $version
+    if [ $version = "develop" ]; then
+      git checkout develop
+    fi
     ./config/autorun.sh
-    ./configure --prefix=$arcusdir --enable-zk-integration --with-zookeeper=$arcus_dir
+    ./configure --prefix=$arcus_dir --enable-zk-integration --with-zookeeper=$arcus_dir
     make
+    sudo make install
     cd ..
   done
 fi
