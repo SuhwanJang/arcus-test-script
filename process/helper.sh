@@ -33,11 +33,11 @@ function get_hostport {
 }
 
 function get_memcached_version {
-  echo "$(jq -r --arg hostname "$1" --arg mtype "$2" --arg port "$3" '.[$hostname][] | .[$mtype][] | select(.port==$port) .version' $filedir/memcached.json)"
+  echo "$(jq -r --arg hostname "$1" --arg mtype "$2" --arg port "$3" '.[$hostname][] | .[$mtype][] | select(.port==$port) .version' $filedir/json/memcached.json)"
 }
 
 function get_client_version {
-  echo "$(jq -r --arg hostname "$1" --arg mtype "$2" --arg client "$3" '.[$hostname][] | .[$client][] | select(.type == $mtype) .version' $filedir/client.json)"
+  echo "$(jq -r --arg hostname "$1" --arg mtype "$2" --arg client "$3" '.[$hostname][] | .[$client][] | select(.type == $mtype) .version' $filedir/json/client.json)"
 }
 
 function read_memlimit {
@@ -82,13 +82,13 @@ function read_enterprise_slave_ports {
   echo "${read_line#"$keyword"}"
 }
 
-function transfer_file {
-  scp -P $(get_hostport $1) "client.json" $username@211.249.63.38:/$filedir
-  scp -P $(get_hostport $1) "memcached.json" $username@211.249.63.38:/$filedir
-  scp -P $(get_hostport $1) "helper.sh" $username@211.249.63.38:/$filedir
-  scp -P $(get_hostport $1) "test_parameter.txt" $username@211.249.63.38:/$filedir
-  scp -P $(get_hostport $1) $2 $username@211.249.63.38:/$filedir
-}
+#function transfer_file {
+#  scp -P $(get_hostport $1) "client.json" $username@211.249.63.38:/$filedir
+#  scp -P $(get_hostport $1) "memcached.json" $username@211.249.63.38:/$filedir
+#  scp -P $(get_hostport $1) "helper.sh" $username@211.249.63.38:/$filedir
+#  scp -P $(get_hostport $1) "test_parameter.txt" $username@211.249.63.38:/$filedir
+#  scp -P $(get_hostport $1) $2 $username@211.249.63.38:/$filedir
+#}
 
 zookeeper=$(read_zookeeper)
 username=$(read_username)

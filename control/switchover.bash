@@ -18,14 +18,14 @@ function check_slavecpu() {
     let "sum+=rusage"
    done
    let "sum/=requests"
-   if [ $sum -gt 200000 ]; then
+   if [ $sum -gt 100000 ]; then
       echo "slave cpu usage is too high. host=$1:$2 rusage=$sum"
       return 1;
    fi
   return 0;
 }
 
-echo ">>>>>> $0 master_port slave_port start_time run_interval"
+echo ">>>>>> $0 master_port slave_port start_time slave_hostname"
 
 if [ -z "$1" ];
 then
@@ -55,6 +55,14 @@ else
   run_interval=$4
 fi
 
+if [ -z "$5" ];
+then
+  echo "need to set slave_hostname"
+  exit
+else
+  slave_hostname=$5
+fi
+
 #if [ -z "$5" ];
 #then
 #  run_count=1000000
@@ -62,7 +70,7 @@ fi
 #  run_count=$5
 #fi
 
-echo ">>>>>> $0 $master_port $slave_port $start_time $run_interval"
+echo ">>>>>> $0 $master_port $slave_port $start_time $run_interval $slave_hostname"
 
 #can_test_failure="switchover_${master_port}.txt"
 #if ! [ -f "$can_test_failure" ]; then
@@ -73,7 +81,6 @@ echo ">>>>>> sleep for $start_time before switchover"
 sleep $start_time
 
 file_time=0
-slave_hostname="jam2in-s001"
 
 COUNTER=1
 #while [ $COUNTER -le $run_count ];

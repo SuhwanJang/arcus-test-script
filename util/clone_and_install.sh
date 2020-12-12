@@ -2,9 +2,9 @@ home="/home/test"
 arcus_dir="$home/arcus"
 clone_EE=0
 clone_open=0
-clone_java=0
-clone_c=0
-clone_misc=1
+clone_java=1
+clone_c=1
+clone_misc=0
 
 if [ -d "$arcus_dir" ]; then
   echo "arcus exists"
@@ -57,7 +57,7 @@ then
   cd $HOME/arcus-memcached-EE-version
 
   #clone arcus-memcached-EE-$version
-  versions=("develop" "0.8.1-E" "0.8.0-E" "0.7.8-E")
+  versions=("develop")
   for version in "${versions[@]}"; do
     if [ -d "$version" ]; then
         echo "arcus-memcached-EE $version exist"
@@ -66,7 +66,7 @@ then
     fi
     cloneCmd="git clone -b $version https://github.com/jam2in/arcus-memcached-EE.git $version"
     if [ $version = "develop" ]; then
-	cloneCmd="git clone https://github.com/jam2in/arcus-memcached-EE.git $version"
+	  cloneCmd="git clone https://github.com/jam2in/arcus-memcached-EE.git $version"
     fi
     cloneCmdRun=$($cloneCmd 2>&1)
     echo -e "Running: \n$ $cloneCmd"
@@ -89,7 +89,7 @@ then
   cd $HOME/arcus-java-client-version
 
   #clone arcus-java-client-$version
-  versions=("develop" "1.12.0" "1.11.5" "1.11.4")
+  versions=("develop" "1.11.5")
   for version in "${versions[@]}"; do
     if [ -d "$version" ]; then
         echo "arcus-java-client $version exist"
@@ -98,7 +98,7 @@ then
     fi
     cloneCmd="git clone -b $version https://github.com/naver/arcus-java-client.git $version"
     if [ $version = "develop" ]; then
-	cloneCmd="git clone https://github.com/naver/arcus-java-client.git $version"
+	    cloneCmd="git clone https://github.com/naver/arcus-java-client.git $version"
     fi
     cloneCmdRun=$($cloneCmd 2>&1)
     echo -e "Running: \n$ $cloneCmd"

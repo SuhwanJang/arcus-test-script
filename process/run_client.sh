@@ -13,7 +13,7 @@ keyset_size=50000
 valueset_min_size=50
 valueset_max_size=100
 pool=1
-pool_size=16
+pool_size=5
 config=""
 client_profile=""
 
@@ -40,7 +40,7 @@ function run_c_client {
   arcus_dir="$HOME/arcus"
   configname="config-standard.txt"
   client_profile="standard_mix"
-  pool_size=32
+  pool_size=25
   mtype=$1
   local dir=""
   if [ $mtype == "community" ]; then
@@ -77,7 +77,7 @@ function run_java_client {
   key_prefix="java-$host:"
   configname="config-arcus-integration.txt"
   client_profile="torture_arcus_integration"
-  pool_size=16
+  pool_size=10
   mtype=$1
   local dir=""
   if [ $mtype == "community" ]; then

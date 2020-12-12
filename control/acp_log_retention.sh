@@ -26,8 +26,8 @@ function check_connection() {
 }
 
 function check_truncate() {
-  running_c=`ps -ef | grep -v "grep" | grep "acp-c/config-standard.txt" | wc -l` 
-  running_java=`ps -ef | grep -v "grep" | grep "acp-java/config-arcus-integration" | wc -l` 
+  running_c=`ps -ef | grep -v "grep" | grep "acp-c/config-standard.txt" | wc -l`
+  running_java=`ps -ef | grep -v "grep" | grep "acp-java/config-arcus-integration" | wc -l`
   if [[ $1 = 1 && $running_c -ge 2 && $running_java -ge 2 ]]; then
     res=0
     return;
@@ -50,7 +50,7 @@ function truncate_file() {
   fi
 
 #10G
-  tlimit=10000000000 
+  tlimit=10000000000
   filesize=`wc -c $logdir/$truncated_log | awk '{print $1}'`
   if [ $? -eq 0 ]; then
     if [ $filesize -ge $tlimit ]; then
@@ -60,7 +60,7 @@ function truncate_file() {
   fi
 
 #1G
-  limit=1000000000 
+  limit=1000000000
   filesize=`wc -c $logfile | awk '{print $1}'`
   if [ $filesize -ge $limit ]; then
     c_line="disabled=0 no_server=0 client=0 other=0|SCREAM"
@@ -73,6 +73,8 @@ function truncate_file() {
     sleep 10
   fi
 }
+
+echo "Started acp_log_retention.sh"
 
 while true;
 do
