@@ -139,7 +139,7 @@ memtier_setting
 
 echo -e "\n TOTAL: ${#client_array[*]} case(s) will be tested"
 echo -e " Before the test, Removing all alived processes ..... "
-bash $path/stop-test.sh $port; sleep 6
+bash $path/stop_test.sh $port; sleep 6
 
 # START TEST
 # make log-directory
@@ -192,7 +192,7 @@ echo -e "\n\n
     sleep 10
     # If memtier over -> Close all process
     echo -e "\n Test done, close all related processes"
-    bash $path/stop-test.sh $port
+    bash $path/stop_test.sh $port
 
 done
 echo -e "\n\n
