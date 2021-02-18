@@ -8,7 +8,8 @@ Github 저장소에서 소스코드를 다운로드합니다.
    
 * 실행 방법   
 
-해당 디렉토리에서 start-test.sh를 실행시킨 뒤 주어진 옵션을 선택하여 server와 memtier의 설정값을 정합니다.
+해당 디렉토리에서 start-test.sh를 실행시킵니다.
+주어진 옵션을 선택하여 server와 memtier의 설정값을 지정합니다.
 ```
 Server type: 1) Arcus  2) Redis : 
 Server mode: 1) Off  2) Async  3) Sync :  
@@ -31,7 +32,42 @@ Test case (multiple select: 1, 2, 3)
      >> 
 
 ```
-테스트를 종료하고 난 뒤 stop-test.sh를 실행하여 port번호를 입력한뒤 관련된 프로세스를 모드 종료해줍니다.
+테스트를 실행하기 전, 기존에 종료되지 못한 테스트와 관련된 프로세스들을 정리한 후 테스트를 구동합니다.
+```
+ TOTAL: 1 case(s) will be tested
+ Before the test, Removing all alived processes .....
+  =>redis kill
+ (Removing processes done)
+```
+각각의 테스트케이스가 진행된 모습입니다.
+```
+============================================================
+----------------------- START TEST -------------------------
+============================================================
+
+Test 1):
+ onlyGetRandom / [redis-async]
+threads=8, clients=50, keymaximum=10000000, data_size=750
+=> Wait for the server turn on ...
+  :Redis SERVER ON
+=> Before the test, perform Insertion operation first...
+  :Insertion opertation complete
+  :CLIENT ON
+=> Resource-recording start
+  :Recording done
+
+ Test done, close all related processes
+ =>redis kill
+ (Removing processes done)
+ 
+============================================================
+------------------------ TEST END --------------------------
+============================================================
+```
+
+* 테스트 종료   
+stop-test.sh를 실행한 뒤 관련된 port번호를 입력하여 종료합니다.
+(```Enter port-number :```)   
 
  G:G 가우시안 분포와 관련해 --key-median, --key-stddev 옵션을 주지 않으면 평균과 표준편차 값이 default로 주어집니다.   
  
