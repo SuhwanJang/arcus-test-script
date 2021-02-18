@@ -32,7 +32,7 @@ Test case (multiple select: 1, 2, 3)
      >> 
 
 ```
-테스트를 실행하기 전, 기존에 종료되지 못한 테스트와 관련된 프로세스들을 정리한 후 테스트를 구동합니다.
+테스트를 실행하기 전, 진행될 총 test의 개수가 보여지고 기존에 종료되지 못한 테스트와 관련된 프로세스들을 정리한 후 테스트를 구동합니다.
 ```
  TOTAL: 1 case(s) will be tested
  Before the test, Removing all alived processes .....
