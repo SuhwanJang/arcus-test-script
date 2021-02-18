@@ -5,42 +5,29 @@ if [[ $# -eq 0 ]]
     else port=$1
 fi
 
-account=$(pwd | cut -d '/' -f 3)
+PID=$(ps -ef | grep $USER | grep -v "grep" | grep logger_chkpt | awk '{print $2}')
+if [[ ${PID} -ne 0 ]]; then echo " =>logger_chkpt($PID) kill"; $(kill -9 ${PID}); fi
+PID=$(ps -ef | grep $USER | grep -v "grep" | grep logger_cmdlog | awk '{print $2}')
+if [[ ${PID} -ne 0 ]]; then echo " =>logger_cmdlog($PID) kill"; $(kill -9 ${PID}); fi  
+PID=$(ps -ef | grep $USER | grep -v "grep" | grep logger_resource | awk '{print $2}')
+if [[ ${PID} -ne 0 ]]; then echo " =>logger_resource($PID) kill"; $(kill -9 ${PID}); fi
+PID=$(ps -ef | grep $USER | grep -v "grep" | grep memtier | grep $port | awk '{print $2}')
+if [[ ${PID} ]]; then echo " =>memtier($PID) kill"; $(kill ${PID}); fi
+PID=$(ps -ef | grep $USER | grep -v "grep" | grep memcached | grep $port | awk '{print $2}')
+if [[ ${PID} ]]; then echo " =>arcus($PID) kill";  $(kill ${PID}); fi
+PID=$(ps -ef | grep $USER | grep -v "grep" | grep redis | grep $port | awk '{print $2}')
+if [[ ${PID} -ne 0 ]]; then echo " =>redis($PID) kill"; $(kill ${PID}); fi
 
-while :
-do
-    sleep 2
-    V_PID=$(ps -ef |grep $account |grep logger_chkpt | awk '{print $2}')
-    if [[ ${V_PID} -ne 0 ]]; then echo " =>log manager kill"; $(kill -9 ${V_PID}); fi
-    V_PID=$(ps -ef |grep $account |grep logger_cmd | awk '{print $2}')
-    if [[ ${V_PID} -ne 0 ]]; then echo " =>log manager kill"; $(kill -9 ${V_PID}); fi  
-    V_PID=$(ps -ef |grep $account |grep logger_resource | awk '{print $2}')
-    if [[ ${V_PID} -ne 0 ]]; then echo " =>log manager kill"; $(kill -9 ${V_PID}); fi
-    C_PID=$(ps -ef |grep $account |grep memtier| grep $port | awk '{print $2}')
-    if [[ ${C_PID} ]]; then echo " =>memtier kill"; $(kill -9 ${C_PID}); fi
-    S_PID=$(ps -ef |grep $account |grep memcache| grep $port | awk '{print $2}')
-    if [[ ${S_PID} ]]; then echo " =>arcus kill";  $(kill -9 ${S_PID}); fi
-    R_PID=$(ps -ef |grep $account |grep redis| grep $port | awk '{print $2}')
-    if [[ ${R_PID} -ne 0 ]]; then echo " =>redis kill"; $(kill -9 ${R_PID}); fi
+sleep 5
+echo "Kill all test processes"
 
+alive1=$(ps -ef| grep $USER | grep -v "grep" | grep $port | cut -d ' ' -f 2)
+alive2=$(ps -ef| grep $USER | grep -v "grep" | grep logger | cut -d ' ' -f 2)
 
-    PROCESS_LIST="$V_PID $C_PID $S_PID $R_PID"
-
-    if [[ $PROCESS_LIST =~ ^[0~9]+$ ]]; then
-        echo ">> Processes to remove : $PROCESS_LIST"
-    else 
-        echo " (Removing processes done)"
-        break
-    fi
-
-    alive1=$(ps -ef| grep $account | grep $port | cut -d ' ' -f 2)
-    alive2=$(ps -ef| grep $account | grep logger | cut -d ' ' -f 2)
-
-    if [[ $alive1 || $alive2 ]]; then
-        echo "___ Delete error : Please delete in manual mode:___"
-        echo $alive1
-        echo $alive2 
-    else
-        break
-    fi
-done
+if [[ $alive1 || $alive2 ]]; then
+    echo "___ Delete error : Please delete in manual mode:___"
+    echo $alive1
+    echo $alive2 
+else
+    break
+fi
