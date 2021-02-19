@@ -28,7 +28,7 @@ Test case (multiple select: 1, 2, 3)
      >> 
 ```
 옵션 선택이 끝나면, 진행될 TEST의 총 개수가 보여집니다.   
-또한 혹여 종료되지 못한 이전 TEST의 프로세스가 있다면 이를 정리한 후 테스트를 구동합니다.
+또한 혹여 종료되지 못한 이전 TEST의 프로세스가 있다면 이를 정리한 후 테스트를 구동합니다.   
 ```
  TOTAL: 9 case(s) will be tested
  Before the test, Removing all alived processes .....
@@ -36,9 +36,9 @@ Test case (multiple select: 1, 2, 3)
  (Removing processes done)
 ```
 
-하나의 TEST가 진행된 모습입니다.
-TEST와 관련된 간단한 info가 제시되며, 진행중인 상황을 알 수 있도록 로그를 보여줍니다.
-각 TEST가 끝나면 관련된 프로세스들을 모두 종료시키도록 하였습니다.
+하나의 TEST가 진행된 모습입니다.   
+TEST와 관련된 간단한 info가 제시되며, 진행중인 상황을 알 수 있도록 로그를 보여줍니다.   
+각 TEST가 끝나면 관련된 프로세스들을 모두 종료시키도록 하였습니다.   
 ```
 ============================================================
 ----------------------- START TEST -------------------------
@@ -61,7 +61,7 @@ threads=8, clients=50, keymaximum=10000000, data_size=750
 =========================TEST END===========================
 ```
 
-TEST 도중 중단할 경우, ```stop-test.sh``` 를 실행하여 관련 프로세스들을 종료시킵니다.
+* TEST 도중 중단이 필요한 경우, ```stop-test.sh``` 를 실행하여 관련 프로세스들을 종료시킵니다.
 ```
 $ ./start-test.sh
 Enter port-number :   # related port number
@@ -127,11 +127,12 @@ Enter port-number :   # related port number
                 ├── appendonly.aof       - AOF 파일
                 └── redis.log            - redis 로그 파일
 ```
- TEST 로그 저장소의 디렉토리 구조는 다음과 같습니다.
- * 상위 디렉토리는 TEST 수행 날짜입니다. 
- * 해당 날짜에 진행된 TEST 수행 단위로 하위 디렉토리가 생성됩니다.    
-  (이때 테스트 수행 단위당 서버의 종류는 하나이므로 이를 기준으로 하여 디렉토리 명이 정해집니다.)
- 각각의 한번 수행 단위별 진행된 연산의 이름을 기준으로 하위디렉토리가 구성됩니다.
+ 
+ * TEST 로그 저장소의 디렉토리 구조는 다음과 같습니다.   
+   수행 날짜 (DATE) 
+   └── 진행된 TEST SET (테스트 단위는 한가지 종류의 서버를 대상으로 함 "디렉토리 명: Server_type-Server_mode") 
+        └── 진행된 각각의 TEST ("디렉토리 명: 해당 서버에 대해 구동한 client의 정보")
+ 
  
 ## TEST 로그 기록 
 
@@ -221,7 +222,7 @@ http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?orgId=1&from=1613697099
 >> Used MEM(K) : 12147804(K)
 ```
 4) memtier.log    
-  : 로그를 해당 파일에 기록된 정보를 이용하여 ops량과    
+  : memtier와 관련된 로그 파일로 memtier config 정보와 진행률(%)에 따른 Ops, Latency를 확인할 수 있습니다.      
 ```
 server = 10.34.93.160
 port = 11300
