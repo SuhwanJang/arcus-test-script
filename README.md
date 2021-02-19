@@ -129,8 +129,8 @@ Enter port-number :   # related port number
 ```
  
  * TEST 로그 저장소의 디렉토리 구조는 다음과 같습니다.   
-   수행 날짜 (DATE) 
-   └── 진행된 TEST SET (테스트 단위는 한가지 종류의 서버를 대상으로 함 "디렉토리 명: Server_type-Server_mode") 
+   수행 날짜 (DATE)     
+   └── 진행된 TEST SET (테스트 단위는 한가지 종류의 서버를 대상으로 함 "디렉토리 명: Server_type-Server_mode")     
         └── 진행된 각각의 TEST ("디렉토리 명: 해당 서버에 대해 구동한 client의 정보")
  
  
@@ -289,12 +289,11 @@ server에 삽입되어 있어야 합니다. 이를 위해 조회와 혼합 연�
 
 ## 기타
 1) G:G 가우시안 분포를 따르는 경우        
-onlyGetLongtail/ GetSetLogtail과 같은 Longtail 연산은 수행시, 
-평균과 표준편차 값을 default로 주기 위해 --key-median, --key-stddev 옵션을 설정하지 않습니다.      
+ : onlyGetLongtail/ GetSetLogtail과 같은 Longtail 연산은 수행시,   
+   평균과 표준편차 값을 default로 주기 위해 --key-median, --key-stddev 옵션을 설정하지 않습니다.      
 
 2) 구동중인 테스트의 실시간 진행률은 memtier.log로 확인이 가능합니다.    
-   아래의 명령어를 통해 확인할 수 있습니다.   
- ``` $ tail -f [path]/memtier.log ```
+   다음 명령어를 통해 확인할 수 있습니다. ``` $ tail -f [path]/memtier.log ```
 
 3) 다음 테스트의 서버를 구동하기 전, 기존의 생성된 백업파일(AOF/snapshot file/commandlog file)은 자동으로 삭제됩니다.   
    따라서 데이터를 복구하는 과정이 필요하다면 백업파일을 따로 보관할 필요가 있습니다.
@@ -307,10 +306,12 @@ onlyGetLongtail/ GetSetLogtail과 같은 Longtail 연산은 수행시,
 
 ## 개선 사항
 해당 스크립트는 TEST별로 하나의 서버를 구동하고 memtier 연산이 끝난 뒤 해당 서버 프로세스를 종료시켜 server의 재사용을 방지한 구조입니다.
-시간 소요가 많이 요구되는 삽입연산의 경우 백업파일을 이용한 방법ㅇ있지 않을까 합니다.
-
+시간 소요가 많이 요구되는 삽입 연산의 경우 백업 파일을 보관하고 다시 load하는 과정으로 변경할 필요가 .
+```
+# start_test.sh 
+function client_insertion()
+```
  ## 테스팅
-시간 관계상 redis의 경우는 rewrite가 일어날때 일정 수준 이상의 memory 공간을 확보해야하는 것을
-지나
+ 
 
 
