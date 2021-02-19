@@ -3,10 +3,10 @@ Github 저장소에서 소스코드를 다운로드합니다.
 ```
 $ git clone -b persistence-test --single-branch https://github.com/jam2in/test-misc.git
 ```
-본격적으로 테스트를 진행하기 위해 ```start-test.sh``` 를 구동합니다.   
+본격적으로 테스트를 진행하기 위해 ```start_test.sh``` 를 구동합니다.   
 server, client와 관련된 속성들이 순차적으로 주어집니다. 옵션을 선택하여 값을 설정합니다.
 ```
-$ ./start-test.sh  
+$ ./start_test.sh  
 Server type: 1) Arcus  2) Redis : 
 Server mode: 1) Off  2) Async  3) Sync :  
 Threads: 
@@ -28,7 +28,7 @@ Test case (multiple select: 1, 2, 3)
      >> 
 ```
 옵션 선택이 끝나면, 진행될 TEST의 총 개수가 보여집니다.   
-또한 혹여 종료되지 못한 이전 TEST의 프로세스가 있다면 이를 정리한 후 테스트를 구동합니다.   
+혹여 종료되지 못한 이전 TEST의 프로세스가 있다면 이를 정리한 후 테스트를 구동합니다.   
 ```
  TOTAL: 9 case(s) will be tested
  Before the test, Removing all alived processes .....
@@ -63,7 +63,7 @@ threads=8, clients=50, keymaximum=10000000, data_size=750
 
 * TEST 도중 중단이 필요한 경우, ```stop-test.sh``` 를 실행하여 관련 프로세스들을 종료시킵니다.
 ```
-$ ./start-test.sh
+$ ./stop_test.sh
 Enter port-number :   # related port number
 ```   
 
@@ -105,17 +105,17 @@ Enter port-number :   # related port number
     └── 2021-02-18/                      - 실행 날짜별 폴더
         │
         │
-        ├── arcus-async_21:38:26/        - TESTS 수행 단위 폴더 
+        ├── arcus-async_21:38:26/        - TEST SET 수행 단위 폴더 
         │   │
         │   ├── onlySet/                 - 개별 TEST 수행 정보 
         │   │   ├── memtier.log          - memtier 로그 파일
-        │   │   └── result.log           - system resource 로그 파일
+        │   │   ├── result.log           - system resource 로그 파일
+        │   │   ├── cmdlog.log           - cmdlog-file size 로그 파일
+        │   │   └── chkpt.log            - checkpoint/rewrite 로그 파일
         │   │
-        │   └── onlyGetRandom /          
+        │   └── onlyGetRandom/          
         │       ├── memtier.log
-        │       ├── result.log
-        │       ├── cmdlog.log           - cmdlog-file size 로그 파일
-        │       └── chkpt.log            - checkpoint/rewrite 로그 파일
+        │       └── result.log
         │
         │
         └── redis-async_21:58:26/         
@@ -166,7 +166,7 @@ AVG: (100%): 1288MB
 
 2) logger_chkpt.sh
 : checkpoint/rewrite의 발생 여부를 확인하며 checkpoint/rewrite 발생 시,   
-해당 checkpoint/ rewrite의 정보 (시작시간/경과시간/스냅샷사이즈/실패여부)를 기록합니다.
+해당 checkpoint/ rewrite의 정보 (시작시간/ 경과시간/ 스냅샷사이즈/ 실패여부)를 기록합니다.
 ```
 20210219_101139 checkpoint stats
 CHECKPOINT 1
@@ -267,6 +267,14 @@ json-out-file = (null)
 8         Threads
 50        Connections per thread
 200000    Requests per client
+.
+.
+.
+[RUN #1 99%, 565 secs]  6 threads:    79570023 ops,  239885 (avg:  140830) ops/sec, 22.48MB/sec (avg: 13.20MB/sec),  1.66 (avg:  2.84) msec latency
+[RUN #1 100%, 565 secs]  5 threads:    79719090 ops,  239885 (avg:  141005) ops/sec, 22.48MB/sec (avg: 13.22MB/sec),  1.66 (avg:  2.83) msec latency
+[RUN #1 100%, 565 secs]  5 threads:    79858756 ops,  239885 (avg:  141184) ops/sec, 22.48MB/sec (avg: 13.23MB/sec),  1.66 (avg:  2.83) msec latency
+[RUN #1 100%, 565 secs]  4 threads:    79964802 ops,  239885 (avg:  141329) ops/sec, 22.48MB/sec (avg: 13.25MB/sec),  1.66 (avg:  2.83) msec latency
+[RUN #1 100%, 565 secs]  0 threads:    80000000 ops,  239885 (avg:  141382) ops/sec, 22.48MB/sec (avg: 13.25MB/sec),  1.66 (avg:  2.82) msec latency
 
 
 ALL STATS
@@ -283,15 +291,17 @@ Totals      79293.12         0.00         0.00         5.08692         7.16700  
 
 ## 삽입 연산 선행
 
-조회 연산과 혼합 연산의 테스트를 진행하기 위해서는 일정 수준의 데이터가 
-server에 삽입되어 있어야 합니다. 이를 위해 조회와 혼합 연산의 경우는 삽입 연산을  
+조회 연산과 혼합 연산의 테스트를 진행하기 위해서는 일정 수준의 데이터가     
+server에 삽입되어 있어야 합니다. 이를 위해 조회와 혼합 연산의 경우는 삽입 연산을     
 우선적으로 수행하여 server에 데이터를 충분히 적재됐는지 확인 후 테스트를 진행합니다.
 
 ## 기타
-1) key-median, key-stddev 설정        
- : Longtail 수행에 필요 옵션인 --key-median, --key-stddev 을 설정하지 않으면, default 값으로 key-median 은 key_range의 중앙값, key-stddev 은 key_range/6 으로 설정됩니다. 현재는 default 값으로 설정되도록 되어 있습니다.
+1) G:G 가우시안 분포를 따르는 경우        
+ : onlyGetLongtail/ GetSetLogtail과 같은 Longtail 연산은 수행시,   
+   평균과 표준편차 값을 default로 주기 위해 --key-median, --key-stddev 옵션을 설정하지 않습니다.      
 
-2) 구동중인 테스트의 실시간 ops/latency 진행률은 memtier.log를 보시면 됩니다. (``` $ tail -f [path]/memtier.log ```)
+2) 구동중인 테스트의 실시간 진행률은 memtier.log로 확인이 가능합니다.    
+   다음 명령어를 통해 확인할 수 있습니다. ``` $ tail -f [path]/memtier.log ```
 
 3) 다음 테스트의 서버를 구동하기 전, 기존의 생성된 백업파일(AOF/snapshot file/commandlog file)은 자동으로 삭제됩니다.   
    따라서 데이터를 복구하는 과정이 필요하다면 백업파일을 따로 보관할 필요가 있습니다.
