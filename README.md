@@ -288,12 +288,10 @@ server에 삽입되어 있어야 합니다. 이를 위해 조회와 혼합 연�
 우선적으로 수행하여 server에 데이터를 충분히 적재됐는지 확인 후 테스트를 진행합니다.
 
 ## 기타
-1) G:G 가우시안 분포를 따르는 경우        
- : onlyGetLongtail/ GetSetLogtail과 같은 Longtail 연산은 수행시,   
-   평균과 표준편차 값을 default로 주기 위해 --key-median, --key-stddev 옵션을 설정하지 않습니다.      
+1) key-median, key-stddev 설정        
+ : Longtail 수행에 필요 옵션인 --key-median, --key-stddev 을 설정하지 않으면, default 값으로 key-median 은 key_range의 중앙값, key-stddev 은 key_range/6 으로 설정됩니다. 현재는 default 값으로 설정되도록 되어 있습니다.
 
-2) 구동중인 테스트의 실시간 진행률은 memtier.log로 확인이 가능합니다.    
-   다음 명령어를 통해 확인할 수 있습니다. ``` $ tail -f [path]/memtier.log ```
+2) 구동중인 테스트의 실시간 ops/latency 진행률은 memtier.log를 보시면 됩니다. (``` $ tail -f [path]/memtier.log ```)
 
 3) 다음 테스트의 서버를 구동하기 전, 기존의 생성된 백업파일(AOF/snapshot file/commandlog file)은 자동으로 삭제됩니다.   
    따라서 데이터를 복구하는 과정이 필요하다면 백업파일을 따로 보관할 필요가 있습니다.
