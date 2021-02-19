@@ -293,7 +293,7 @@ Totals      79293.12         0.00         0.00         5.08692         7.16700  
 
 조회 연산과 혼합 연산의 테스트를 진행하기 위해서는 일정 수준의 데이터가     
 server에 삽입되어 있어야 합니다. 이를 위해 조회와 혼합 연산의 경우는 삽입 연산을     
-우선적으로 수행하여 server에 데이터를 충분히 적재됐는지 확인 후 테스트를 진행합니다.
+우선적으로 수행하여 server에 데이터를 충분히 적재했는지 확인 후 테스트를 진행합니다.
 
 ## 기타
 1) key-median, key-stddev 설정        
@@ -306,13 +306,13 @@ server에 삽입되어 있어야 합니다. 이를 위해 조회와 혼합 연�
 
 4) Redis의 경우 rewrite가 일어나는 과정에서 일정수준 이상의 메모리가 확보되어야 하는 것이 확인되었습니다.   
    이 경우 rewrite가 일어나도 메모리 부족 현상이 발생하지 않도록 적절한 계산이 요구됩니다. 
-   [참조: redis sync 3:7](http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?from=1612852818101&to=1612857251191&var-ensemble=jam2in-m001:2170&var-service_code=persistence&var-node=jam2in-m001:11300&var-node_host=jam2in-m001&var-node_port=11300&var-host=jam2in-m001&orgId=1)
+   [참조 (redis sync 3:7)](http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?from=1612852818101&to=1612857251191&var-ensemble=jam2in-m001:2170&var-service_code=persistence&var-node=jam2in-m001:11300&var-node_host=jam2in-m001&var-node_port=11300&var-host=jam2in-m001&orgId=1)
    
 
 
 ## 개선 사항
 해당 스크립트는 TEST별로 하나의 서버를 구동하고 memtier 연산이 끝난 뒤 해당 서버 프로세스를 종료시켜 server의 재사용을 방지한 구조입니다.
-시간 소요가 많이 요구되는 삽입 연산의 경우 백업 파일을 보관하고 다시 load하는 과정으로 변경할 필요가 .
+시간 소요가 많이 요구되는 삽입 연산의 경우 백업 파일을 보관하고 다시 load하는 과정으로 변경할 필요가 있습니다.
 ```
 # start_test.sh 
 function client_insertion()
