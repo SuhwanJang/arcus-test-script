@@ -28,13 +28,7 @@ Test case (multiple select: 1, 2, 3)
      >> 
 ```
 옵션 선택이 끝나면, 진행될 TEST의 총 개수가 보여집니다.   
-혹여 종료되지 못한 이전 TEST의 프로세스가 있다면 이를 정리한 후 테스트를 구동합니다.   
-```
- TOTAL: 9 case(s) will be tested
- Before the test, Removing all alived processes .....
-  =>redis(75933) kill
- (Removing processes done)
-```
+혹여 종료되지 못한 이전 TEST의 프로세스가 있다면 이를 정리한 후 테스트를 구동합니다.   l
 
 하나의 TEST가 진행된 모습입니다.   
 TEST와 관련된 간단한 info가 제시되며, 진행중인 상황을 알 수 있도록 로그를 보여줍니다.   
@@ -43,33 +37,30 @@ TEST와 관련된 간단한 info가 제시되며, 진행중인 상황을 알 수
 ============================================================
 ----------------------- START TEST -------------------------
 ============================================================
-Test 1):
- onlyGetRandom / [redis-async]
-threads=8, clients=50, keymaximum=10000000, data_size=750
-=> Wait for the server turn on ...
-  :Redis SERVER ON
-=> Before the test, perform Insertion operation first...
-  :Insertion opertation complete
-  :CLIENT ON
-=> Resource-recording start
-  :Recording done
+Test: arcus-async / onlySet
+Params: threads=8, clients=50, keymaximum=10000000, data_size=750
+Run processes..
+ => Arcus started.
+ => Memtier started.
+ => logger_resource.sh started.
+ => logger_chkpt.sh started.
+ => logger_cmdlog.sh started.
 
- Test done, close all related processes
- =>redis kill
- (Removing processes done)
+Test Running..
+
+Test done, kill test processes.
+ => arcus(12321) killed
+ => memtier(33243) killed.
+ => logger_resource.sh(23234) killed.
+ => logger_chkpt.sh(23232) killed.
+ => logger_cmdlog.sh(23233) killed.
  
 =========================TEST END===========================
 ```
 
 * TEST 도중 중단이 필요한 경우, ```stop-test.sh``` 를 실행하여 관련 프로세스들을 종료시킵니다.
-```
-$ ./stop_test.sh
-Enter port-number :   # related port number
-```   
 
- 
- 
- # 데이터 구조
+# 데이터 구조
 
 데이터 흐름의 기준은 다음과 같습니다.
 
