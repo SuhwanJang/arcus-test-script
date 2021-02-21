@@ -42,5 +42,5 @@ echo -e "1) SERVER
 Type : $server_type
 Mode : $server_mode
 Command :
-$S_command\n\n"
+$S_command\n\n\n"
 fi

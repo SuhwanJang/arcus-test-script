@@ -19,7 +19,7 @@ function memtier_setting(){
     read -r -p "Threads: " threads
     read -r -p "Clients: " clients  
     read -r -p "Key-maximum: 0) input  1) 100 Mil  2) 80 Mil  3) 50 Mil  4) 10 Mil :  " keymaximum
-    keymaximum_list=("" "100000000" "80000000" "50000000" "10000000")
+    keymaximum_list=("" "100000000" "80000000" "50000000" "1000000")
     if [[ keymaximum -eq 0 ]]; then read -r -p "> put any number you want: " keymaximum; fi
     if [[ keymaximum -ge 1 && keymaximum -le 4 ]]; then keymaximum=${keymaximum_list[$keymaximum]}; fi
     read -r -p "Key-minimum: 0) input  1) 1 :  " keyminimum
@@ -64,20 +64,23 @@ function server_run(){
     if [[ -f "$path/appendonly.aof" ]]; then
         $(rm $path/appendonly.aof)
     fi
-    echo "=> Wait for the server turn on ..."
-    while : 
-    do  
-        sleep 4
-        C_PID=$(ps -ef | grep $account | grep memcached |grep $port |awk '{print $2}')
-        S_PID=$(ps -ef | grep $account | grep redis | grep $port |awk '{print $2}')
-        if [[ $C_PID ]]; then echo "  :Arcus SERVER ON"; SERVER_PID=$C_PID; break; fi
-        if [[ $S_PID ]]; then echo "  :Redis SERVER ON"; SERVER_PID=$S_PID; break; fi
+    while :
+    do
+        if [[ $server_type == *"arcus"* ]]
+        then
+            PID=$(ps -ef | grep $account | grep memcached | grep $port | awk '{print $2}')
+            if [[ $PID ]]; then echo " => Arcus started."; SERVER_PID=$PID; break; fi
+        else
+            PID=$(ps -ef | grep $account | grep redis | grep $port | awk '{print $2}')
+            if [[ $PID ]]; then echo " => Redis started."; SERVER_PID=$PID; break; fi
+        fi
         bash $path/run_server.sh $1 $port >> $FILENAME
+        sleep 2
     done
 }
-# CLIENT operation
+
 function client_insertion(){
-    echo "=> Before the test, perform Insertion operation first..."
+    echo "=> Before the test, perform insertion operation first..."
     export START_TIME=$(date +%s)
     bash $path/run_memtier.sh "$client_input/1" $port >> $FILENAME
     while :
@@ -94,8 +97,9 @@ http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?orgId=1&from=${START_TI
 function client_record_run(){
     export START_TIME=$(date +%s)
     bash $path/run_memtier.sh "$client_input/$client_mode" $port >> $FILENAME
-    echo "  :CLIENT ON"
+    echo " => Memtier started."
     record_log 
+    echo -e "\nTest Running.."
     while :
     do
         sleep 2
@@ -112,10 +116,13 @@ http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?orgId=1&from=${START_TI
 function record_log(){ 
     log_path="$path/logscripts"
     bash ${log_path}/logger_resource.sh ${record_path} ${FILENAME} $SERVER_PID &
+    echo " => logger_resource.sh started."
     # Do not record chkptlog in search mode
     if [[ "$server_mode" == *"sync"* || "$server_mode" == *"async"* ]]; then
         bash ${log_path}/logger_cmdlog.sh ${record_path} ${keymaximum} &
+        echo " => logger_cmdlog.sh started."
         bash ${log_path}/logger_chkpt.sh ${record_path} &
+        echo " => logger_chkpt.sh started."
     fi
 }
 
@@ -137,8 +144,8 @@ port=11300
 server_setting
 memtier_setting
 
-echo -e "\n TOTAL: ${#client_array[*]} case(s) will be tested"
-echo -e " Before the test, Removing all alived processes ..... "
+echo -e "\n${#client_array[*]} case(s) will be tested."
+echo -e "Before the test, Kill test processes..."
 bash $path/stop_test.sh $port; sleep 6
 
 # START TEST
@@ -164,38 +171,30 @@ do
         9) CLIENT_TEST="GetSetLongtail(5:5)";;
     esac
     count=$(($count+1)) 
-    echo -e "\n\n
-============================================================
------------------------ START TEST -------------------------
-============================================================\n"
-    echo -e "Test $count): \n $CLIENT_TEST / [${server_type}-${server_mode}]"
-    echo -e "threads=$threads, clients=$clients, keymaximum=$keymaximum, data_size=${data_size}"
+    echo -e "\n\n======================= START TEST =========================\n"
+    echo -e "Test: ${server_type}-${server_mode} / $CLIENT_TEST"
+    echo -e "Params: threads=$threads, clients=$clients, keymaximum=$keymaximum, data_size=${data_size}"
     
     record_path=$test_path/$CLIENT_TEST
     mkdir -p $record_path
     cd $record_path
     FILENAME=result.log
 
-    # server on
+    echo "Run processes..."
     server_run "${server_type}-${server_mode}" $port
     # 삽입 이외의 나머지 연산은  arcus/redis 삽입연산 후 원하는 연산 수행
     client_input="${threads}/${clients}/${keymaximum}/${keyminimum}/${data_size}/${protocol}"
     echo -e "2) CLIENT
 -------------------------------------------------------------------------------" >> $FILENAME
     if [[ "$client_mode" != "1" ]]; then client_insertion; fi
-echo -e "\n\n
-============================================================
------------------------- CLIENT TEST------------------------
-============================================================\n\n" >> ${record_path}/memtier.log
     client_record_run  
     $(sed -i 's//\n/g' "${record_path}/memtier.log") # remove '^M' in memtier.log
+
     sleep 10
-    # If memtier over -> Close all process
-    echo -e "\n Test done, close all related processes"
+    echo -e "\nTest done, kill test processes"
     bash $path/stop_test.sh $port
+echo -e "
+======================== TEST END ==========================\n"
 
 done
-echo -e "\n\n
-============================================================
------------------------- TEST END --------------------------
-============================================================\n"
+

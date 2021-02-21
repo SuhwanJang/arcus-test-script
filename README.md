@@ -34,9 +34,7 @@ Test case (multiple select: 1, 2, 3)
 TEST와 관련된 간단한 info가 제시되며, 진행중인 상황을 알 수 있도록 로그를 보여줍니다.   
 각 TEST가 끝나면 관련된 프로세스들을 모두 종료시키도록 하였습니다.   
 ```
-============================================================
------------------------ START TEST -------------------------
-============================================================
+======================= START TEST =========================
 Test: arcus-async / onlySet
 Params: threads=8, clients=50, keymaximum=10000000, data_size=750
 Run processes..
@@ -49,11 +47,7 @@ Run processes..
 Test Running..
 
 Test done, kill test processes.
- => arcus(12321) killed
- => memtier(33243) killed.
- => logger_resource.sh(23234) killed.
- => logger_chkpt.sh(23232) killed.
- => logger_cmdlog.sh(23233) killed.
+ => arcus(12321) killed.
  
 =========================TEST END===========================
 ```

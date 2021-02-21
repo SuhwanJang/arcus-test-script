@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "=> Resource-recording start"
-
 # define server IP(현재 사용중 IP를 확인해서)
 server=$(hostname -I)
 server="$(echo -e "${server}" | tr -d '[:space:]')"
@@ -46,7 +44,6 @@ do
     if [[ "${#MPID}" == "0"* ]]; then 
         after_MEM=$(pmap $SERVER_PID | grep total | awk '{print $2}' | sed 's/[^0-9]//g')
         used_MEM_K=$(($after_MEM-$before_MEM))
-        sleep 6
         break 
     fi
 done
@@ -59,5 +56,3 @@ echo -e "\n\n3) SYSTEM RESOURCE
 >> Average client CPU(%) : $client_AVG_CPU%
 >> TEST_TIME : $start_time ~ $(date '+%Y/%m/%d/ %H:%M:%S')
 >> Used MEM(K) : ${used_MEM_K}(K)\n\n\n" >> $FILENAME
-
-echo "  :Recording done"
