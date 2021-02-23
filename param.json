@@ -1,0 +1,13 @@
+{
+    "server": "10.34.93.160",
+    "remote": 11618, 
+    "port": 11300,
+    "server_type": "redis",
+    "server_mode": "async",
+    "threads": 8,
+    "clients": 50,
+    "keyminimum": 1,
+    "keymaximum": 50000000,
+    "data_size": 50,
+    "client_mode": 0
+}

@@ -1,12 +1,6 @@
 #!/bin/bash
+source readconfig.sh
 
-# define server IP(현재 사용중 IP를 확인해서)
-server=$(hostname -I)
-server="$(echo -e "${server}" | tr -d '[:space:]')"
-case ${server} in
-10.34.93.160) remote="11618";; # m002
-10.34.91.143) remote="11617";; # m001
-esac
 SERVER_PID=$3
 LOG_PATH=$1
 FILENAME=$2
@@ -32,7 +26,7 @@ do
         server_AVG_CPU=$(($server_SUM / $server_count))
     fi
     # Check memtier CPU%
-    client_top=$(ssh -T persistence@211.249.63.38 -p ${remote} top -b -n 1 | grep memtier| awk '{print $9}' | cut -d "." -f 1)
+    client_top=$(ssh -T persistence@211.249.63.38 -p ${remote} top -b -n 1 | grep memtier | awk '{print $9}' | cut -d "." -f 1)
     if [[ $client_top ]]; then 
         client_top=$(echo $client_top | awk '{print $1 + $2}')
         client_SUM=$(($client_SUM + $client_top))
@@ -48,7 +42,7 @@ do
     fi
 done
 
-# If memtier-benchmarck over...
+# If memtier-benchmark over...
 # Calculate used memory and AVG cpu%
 echo -e "\n\n3) SYSTEM RESOURCE
 -------------------------------------------------------------------------------

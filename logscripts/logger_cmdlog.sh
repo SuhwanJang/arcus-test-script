@@ -1,20 +1,11 @@
 #!/bin/bash
-
-# define server IP
-server=$(hostname -I)
-server="$(echo -e "${server}" | tr -d '[:space:]')"
-case ${server} in
-10.34.93.160) remote="11618";; # m002
-10.34.91.143) remote="11617";; # m001
-esac
+source readconfig.sh
 
 #initialize
-cd "$1"
-FILENAME="cmd_size.log"
-keymaximum=$2
+FILENAME="$1/cmd_size.log"
 
 # Record checkpoint stats to file.
-if [[ "$1" == *"off"* ]];then 
+if [[ "$server_mode" == "off" ]];then
     echo "persistence(AOF) off"
     exit 0
 fi
@@ -22,7 +13,7 @@ fi
 now="$(date +'%Y%m%d_%H%M%S')"
 echo -e "\n$now recording cmdlog start\n" >> $FILENAME
 
-if [[ "$1" == *"arcus"* ]];then #ARCUS
+if [[ "$server_type" == "arcus" ]];then #ARCUS
     CMD_CURRITEM='echo "stats" | nc localhost 11300 | grep curr_items | cut -d " " -f 3| sed 's/[^0-9]//g''
     CMD_CMDLOG_SIZE='echo "stats persistence" | nc localhost 11300 | grep current_command_log_filesize_bytes | cut -d " " -f 3 | sed 's/[^0-9]//g''
 else # Redis

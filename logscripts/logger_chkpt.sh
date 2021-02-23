@@ -1,34 +1,20 @@
 #!/bin/bash
 # Record checkpoint stats to file.
+source readconfig.sh
 
-# define server IP
-server=$(hostname -I)
-server="$(echo -e "${server}" | tr -d '[:space:]')"
-case ${server} in
-10.34.93.160) remote="11618";; # m002
-10.34.91.143) remote="11617";; # m001
-esac
-
-cd "$1"
-FILENAME="chkpt.log"
-
-# Record checkpoint stats to file.
-if [[ "$1" == *"off"* ]];then 
-    echo "persistence(AOF) off"
-    exit 0
-fi
+FILENAME="$1/chkpt.log"
 
 now="$(date +'%Y%m%d_%H%M%S')"
 echo -e "\n$now checkpoint stats\n" >> $FILENAME
 
-if [[ "$1" == *"arcus"* ]];then #ARCUS
+if [[ "$server_type" == "arcus" ]]; then
     CHKPT_RW=CHECKPOINT
     CMD_INPROGRESS='echo "stats persistence" | nc localhost 11300 | grep chkpt_in_progress | cut -d " " -f 3'
     CMD_STARTTIME='echo "stats persistence" | nc localhost 11300 | grep chkpt_start_time | cut -d " " -f 3'
     CMD_ELAPSEDTIME='echo "stats persistence" | nc localhost 11300 | grep chkpt_elapsed_time_sec | cut -d " " -f 3'
     CMD_SIZE='echo "stats persistence" | nc localhost 11300 | grep last_chkpt_snapshot_filesize_bytes | cut -d " " -f 3 | sed 's/[^0-9]//g''
     CMD_FAILURE='echo "stats persistence" | nc localhost 11300 | grep last_chkpt_failure_count | cut -d " " -f 3'
-else # Redis
+else
     CHKPT_RW=REWRITE
     CMD_INPROGRESS='echo "info persistence" | nc localhost 11300 | grep aof_rewrite_in_progress | cut -d ":" -f 2' # 1/0 
     CMD_STARTTIME='tail -n 10 $1/redis.log | grep "Background append only file rewriting started" | cut -d "*" -f 1 | cut -d "M" -f 2'

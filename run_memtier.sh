@@ -1,25 +1,13 @@
 #!/bin/sh
+source readconfig.sh
 
-threads=$(echo $1 | cut -d '/' -f 1)
-clients=$(echo $1 | cut -d '/' -f 2)
-keymaximum=$(echo $1 | cut -d '/' -f 3)
-keyminimum=$(echo $1 | cut -d '/' -f 4)
-data_size=$(echo $1 | cut -d '/' -f 5) 
-protocol=$(echo $1 | cut -d '/' -f 6) # memcache_text/ redis
-client_mode=$(echo $1 | cut -d '/' -f 7 | cut -d '(' -f 1)
-requests=$((keymaximum/(clients*threads)))
-key_median=$(((keymaximum-keyminimum)/2))
-port=$2
+if [[ $server_type == "arcus" ]]
+then protocol=memcache_text
+else protocol=redis
+fi
+echo $server
 
-# define server IP(현재client의IP를 확인해서)
-server=$(hostname -I | tr -d '[:space:]')
-case ${server} in
-10.34.93.160) remote="11618";; # server: m001 & client: m002
-10.34.91.143) remote="11617";; # server: m002 & client: m001
-esac
-
-#read client_mode
-case $client_mode in
+case $1 in
 1) cli_mode="[1] onlySet"
 C_command="ssh -T persistence@211.249.63.38 -p ${remote} \
 $HOME/memtier_benchmark/memtier_benchmark -s ${server} -p ${port} \
@@ -93,4 +81,4 @@ esac
 
 echo -e "Test : $cli_mode\nCommand :\n$C_command"
 
-${C_command} &>> "memtier.log" &
+${C_command} &>> $2/memtier.log &
