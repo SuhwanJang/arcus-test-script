@@ -1,0 +1,21 @@
+
+20210302_212514 checkpoint stats
+
+CHECKPOINT 1
+StartTime     : 20210302212540
+ElapsedTime   : 12
+SnapshotSize  : 350MB
+FailCount     : 0
+
+CHECKPOINT 2
+StartTime     : 20210302212647
+ElapsedTime   : 31
+SnapshotSize  : 1191MB
+FailCount     : 0
+
+CHECKPOINT 3
+StartTime     : 20210302213044
+ElapsedTime   : 93
+SnapshotSize  : 3987MB
+FailCount     : 0
+

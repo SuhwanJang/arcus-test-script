@@ -1,0 +1,132 @@
+18636:C 22 Feb 2021 22:12:38.819 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+18636:C 22 Feb 2021 22:12:38.819 # Redis version=6.0.10, bits=64, commit=00000000, modified=0, pid=18636, just started
+18636:C 22 Feb 2021 22:12:38.819 # Configuration loaded
+18636:M 22 Feb 2021 22:12:38.821 * Running mode=standalone, port=11300.
+18636:M 22 Feb 2021 22:12:38.821 # Server initialized
+18636:M 22 Feb 2021 22:12:38.821 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+18636:M 22 Feb 2021 22:12:38.821 * Ready to accept connections
+18636:M 22 Feb 2021 22:12:49.079 * Starting automatic rewriting of AOF on 6800045000% growth
+18636:M 22 Feb 2021 22:12:49.082 * Background append only file rewriting started by pid 18907
+18636:M 22 Feb 2021 22:12:50.871 * AOF rewrite child asks to stop sending diffs.
+18907:C 22 Feb 2021 22:12:50.871 * Parent agreed to stop sending diffs. Finalizing AOF...
+18907:C 22 Feb 2021 22:12:50.871 * Concatenating 18.56 MB of AOF diff received from parent.
+18907:C 22 Feb 2021 22:12:50.946 * SYNC append only file rewrite performed
+18907:C 22 Feb 2021 22:12:50.949 * AOF rewrite: 46 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 22:12:50.988 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 22:12:50.989 * Residual parent diff successfully flushed to the rewritten AOF (1.24 MB)
+18636:M 22 Feb 2021 22:12:50.989 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 22:12:55.046 * Starting automatic rewriting of AOF on 102% growth
+18636:M 22 Feb 2021 22:12:55.051 * Background append only file rewriting started by pid 19066
+18636:M 22 Feb 2021 22:12:56.705 * AOF rewrite child asks to stop sending diffs.
+19066:C 22 Feb 2021 22:12:56.705 * Parent agreed to stop sending diffs. Finalizing AOF...
+19066:C 22 Feb 2021 22:12:56.705 * Concatenating 18.25 MB of AOF diff received from parent.
+19066:C 22 Feb 2021 22:12:56.767 * SYNC append only file rewrite performed
+19066:C 22 Feb 2021 22:12:56.771 * AOF rewrite: 39 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 22:12:56.855 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 22:12:56.856 * Residual parent diff successfully flushed to the rewritten AOF (1.47 MB)
+18636:M 22 Feb 2021 22:12:56.856 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 22:13:02.219 * Starting automatic rewriting of AOF on 100% growth
+18636:M 22 Feb 2021 22:13:02.226 * Background append only file rewriting started by pid 19235
+18636:M 22 Feb 2021 22:13:05.961 * AOF rewrite child asks to stop sending diffs.
+19235:C 22 Feb 2021 22:13:05.961 * Parent agreed to stop sending diffs. Finalizing AOF...
+19235:C 22 Feb 2021 22:13:05.961 * Concatenating 33.81 MB of AOF diff received from parent.
+19235:C 22 Feb 2021 22:13:06.075 * SYNC append only file rewrite performed
+19235:C 22 Feb 2021 22:13:06.082 * AOF rewrite: 182 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 22:13:06.160 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 22:13:06.162 * Residual parent diff successfully flushed to the rewritten AOF (2.21 MB)
+18636:M 22 Feb 2021 22:13:06.162 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 22:13:15.100 * Starting automatic rewriting of AOF on 100% growth
+18636:M 22 Feb 2021 22:13:15.112 * Background append only file rewriting started by pid 19558
+18636:M 22 Feb 2021 22:13:20.681 * AOF rewrite child asks to stop sending diffs.
+19558:C 22 Feb 2021 22:13:20.681 * Parent agreed to stop sending diffs. Finalizing AOF...
+19558:C 22 Feb 2021 22:13:20.681 * Concatenating 58.19 MB of AOF diff received from parent.
+19558:C 22 Feb 2021 22:13:20.869 * SYNC append only file rewrite performed
+19558:C 22 Feb 2021 22:13:20.880 * AOF rewrite: 97 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 22:13:20.942 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 22:13:20.943 * Residual parent diff successfully flushed to the rewritten AOF (2.47 MB)
+18636:M 22 Feb 2021 22:13:20.943 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 22:13:36.781 * Starting automatic rewriting of AOF on 100% growth
+18636:M 22 Feb 2021 22:13:36.802 * Background append only file rewriting started by pid 20006
+18636:M 22 Feb 2021 22:13:45.625 * AOF rewrite child asks to stop sending diffs.
+20006:C 22 Feb 2021 22:13:45.628 * Parent agreed to stop sending diffs. Finalizing AOF...
+20006:C 22 Feb 2021 22:13:45.628 * Concatenating 108.91 MB of AOF diff received from parent.
+20006:C 22 Feb 2021 22:13:46.324 * SYNC append only file rewrite performed
+20006:C 22 Feb 2021 22:13:46.344 * AOF rewrite: 244 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 22:13:46.447 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 22:13:46.453 * Residual parent diff successfully flushed to the rewritten AOF (8.85 MB)
+18636:M 22 Feb 2021 22:13:46.453 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 22:14:13.062 * Starting automatic rewriting of AOF on 100% growth
+18636:M 22 Feb 2021 22:14:13.096 * Background append only file rewriting started by pid 20799
+18636:M 22 Feb 2021 22:14:27.708 * AOF rewrite child asks to stop sending diffs.
+20799:C 22 Feb 2021 22:14:27.708 * Parent agreed to stop sending diffs. Finalizing AOF...
+20799:C 22 Feb 2021 22:14:27.708 * Concatenating 163.00 MB of AOF diff received from parent.
+20799:C 22 Feb 2021 22:14:29.378 * SYNC append only file rewrite performed
+20799:C 22 Feb 2021 22:14:29.411 * AOF rewrite: 363 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 22:14:29.576 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 22:14:29.592 * Residual parent diff successfully flushed to the rewritten AOF (19.79 MB)
+18636:M 22 Feb 2021 22:14:29.592 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 22:15:22.518 * Starting automatic rewriting of AOF on 100% growth
+18636:M 22 Feb 2021 22:15:22.580 * Background append only file rewriting started by pid 22251
+18636:M 22 Feb 2021 22:15:48.127 * AOF rewrite child asks to stop sending diffs.
+22251:C 22 Feb 2021 22:15:48.127 * Parent agreed to stop sending diffs. Finalizing AOF...
+22251:C 22 Feb 2021 22:15:48.127 * Concatenating 244.37 MB of AOF diff received from parent.
+22251:C 22 Feb 2021 22:15:50.693 * SYNC append only file rewrite performed
+22251:C 22 Feb 2021 22:15:50.745 * AOF rewrite: 1476 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 22:15:51.084 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 22:15:51.111 * Residual parent diff successfully flushed to the rewritten AOF (37.24 MB)
+18636:M 22 Feb 2021 22:15:51.111 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 22:17:02.420 * Starting automatic rewriting of AOF on 100% growth
+18636:M 22 Feb 2021 22:17:02.517 * Background append only file rewriting started by pid 24332
+18636:M 22 Feb 2021 22:17:52.776 * AOF rewrite child asks to stop sending diffs.
+24332:C 22 Feb 2021 22:17:52.777 * Parent agreed to stop sending diffs. Finalizing AOF...
+24332:C 22 Feb 2021 22:17:52.777 * Concatenating 506.54 MB of AOF diff received from parent.
+24332:C 22 Feb 2021 22:17:59.622 * SYNC append only file rewrite performed
+24332:C 22 Feb 2021 22:17:59.711 * AOF rewrite: 773 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 22:17:59.927 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 22:17:59.978 * Residual parent diff successfully flushed to the rewritten AOF (68.22 MB)
+18636:M 22 Feb 2021 22:17:59.978 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 22:45:13.001 * Starting automatic rewriting of AOF on 100% growth
+18636:M 22 Feb 2021 22:45:13.175 * Background append only file rewriting started by pid 49914
+18636:M 22 Feb 2021 22:46:20.560 * AOF rewrite child asks to stop sending diffs.
+49914:C 22 Feb 2021 22:46:20.560 * Parent agreed to stop sending diffs. Finalizing AOF...
+49914:C 22 Feb 2021 22:46:20.560 * Concatenating 28.24 MB of AOF diff received from parent.
+49914:C 22 Feb 2021 22:46:20.646 * SYNC append only file rewrite performed
+49914:C 22 Feb 2021 22:46:20.782 * AOF rewrite: 95 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 22:46:21.064 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 22:46:21.064 * Residual parent diff successfully flushed to the rewritten AOF (0.00 MB)
+18636:M 22 Feb 2021 22:46:21.064 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 22:57:19.278 * Starting automatic rewriting of AOF on 100% growth
+18636:M 22 Feb 2021 22:57:19.448 * Background append only file rewriting started by pid 59609
+18636:M 22 Feb 2021 22:58:35.052 * AOF rewrite child asks to stop sending diffs.
+59609:C 22 Feb 2021 22:58:35.052 * Parent agreed to stop sending diffs. Finalizing AOF...
+59609:C 22 Feb 2021 22:58:35.052 * Concatenating 490.68 MB of AOF diff received from parent.
+59609:C 22 Feb 2021 22:58:41.510 * SYNC append only file rewrite performed
+59609:C 22 Feb 2021 22:58:41.660 * AOF rewrite: 1226 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 22:58:42.064 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 22:58:42.098 * Residual parent diff successfully flushed to the rewritten AOF (44.86 MB)
+18636:M 22 Feb 2021 22:58:42.098 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 23:11:31.061 * Starting automatic rewriting of AOF on 100% growth
+18636:M 22 Feb 2021 23:11:31.227 * Background append only file rewriting started by pid 74034
+18636:M 22 Feb 2021 23:12:40.696 * AOF rewrite child asks to stop sending diffs.
+74034:C 22 Feb 2021 23:12:40.696 * Parent agreed to stop sending diffs. Finalizing AOF...
+74034:C 22 Feb 2021 23:12:40.697 * Concatenating 43.17 MB of AOF diff received from parent.
+74034:C 22 Feb 2021 23:12:40.831 * SYNC append only file rewrite performed
+74034:C 22 Feb 2021 23:12:40.970 * AOF rewrite: 3423 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 23:12:41.578 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 23:12:41.578 * Residual parent diff successfully flushed to the rewritten AOF (0.00 MB)
+18636:M 22 Feb 2021 23:12:41.578 * Background AOF rewrite finished successfully
+18636:M 22 Feb 2021 23:24:27.112 * Starting automatic rewriting of AOF on 100% growth
+18636:M 22 Feb 2021 23:24:27.295 * Background append only file rewriting started by pid 85016
+18636:M 22 Feb 2021 23:25:43.239 * AOF rewrite child asks to stop sending diffs.
+85016:C 22 Feb 2021 23:25:43.248 * Parent agreed to stop sending diffs. Finalizing AOF...
+85016:C 22 Feb 2021 23:25:43.248 * Concatenating 327.81 MB of AOF diff received from parent.
+85016:C 22 Feb 2021 23:25:47.387 * SYNC append only file rewrite performed
+85016:C 22 Feb 2021 23:25:47.509 * AOF rewrite: 6087 MB of memory used by copy-on-write
+18636:M 22 Feb 2021 23:25:48.481 * Background AOF rewrite terminated with success
+18636:M 22 Feb 2021 23:25:48.499 * Residual parent diff successfully flushed to the rewritten AOF (25.07 MB)
+18636:M 22 Feb 2021 23:25:48.500 * Background AOF rewrite finished successfully
+18636:signal-handler (1614005933) Received SIGTERM scheduling shutdown...
+18636:M 22 Feb 2021 23:58:53.181 # User requested shutdown...
+18636:M 22 Feb 2021 23:58:53.181 * Calling fsync() on the AOF file.
+18636:M 22 Feb 2021 23:58:53.182 * Removing the pid file.
+18636:M 22 Feb 2021 23:58:53.182 # Redis is now ready to exit, bye bye...

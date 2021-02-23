@@ -1,0 +1,19 @@
+128876:C 23 Feb 2021 20:52:04.595 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+128876:C 23 Feb 2021 20:52:04.595 # Redis version=6.0.10, bits=64, commit=00000000, modified=0, pid=128876, just started
+128876:C 23 Feb 2021 20:52:04.595 # Configuration loaded
+128876:M 23 Feb 2021 20:52:04.597 * Running mode=standalone, port=11300.
+128876:M 23 Feb 2021 20:52:04.597 # Server initialized
+128876:M 23 Feb 2021 20:52:04.597 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+128876:M 23 Feb 2021 20:52:04.597 * Reading RDB preamble from AOF file...
+128876:M 23 Feb 2021 20:52:04.597 * Loading RDB produced by version 6.0.10
+128876:M 23 Feb 2021 20:52:04.597 * RDB age 86 seconds
+128876:M 23 Feb 2021 20:52:04.597 * RDB memory usage when created 5557.45 Mb
+128876:M 23 Feb 2021 20:52:04.597 * RDB has an AOF tail
+128876:M 23 Feb 2021 20:52:50.750 * Reading the remaining AOF tail...
+128876:M 23 Feb 2021 20:52:59.670 * DB loaded from append only file: 55.072 seconds
+128876:M 23 Feb 2021 20:52:59.670 * Ready to accept connections
+128876:signal-handler (1614081675) Received SIGTERM scheduling shutdown...
+128876:M 23 Feb 2021 21:01:15.102 # User requested shutdown...
+128876:M 23 Feb 2021 21:01:15.102 * Calling fsync() on the AOF file.
+128876:M 23 Feb 2021 21:01:15.102 * Removing the pid file.
+128876:M 23 Feb 2021 21:01:15.102 # Redis is now ready to exit, bye bye...

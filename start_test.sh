@@ -118,7 +118,7 @@ do
     server_run
     if [[ "$client_mode" != "1" ]]; then
         echo "wait for recovery time."
-        sleep 160
+        sleep 180
     fi
     echo -e "2) CLIENT -------------------------------------------------------------------------------" >> $FILENAME
 #    if [[ "$client_mode" != "1" ]]; then client_insertion; fi

@@ -1,0 +1,51 @@
+
+20210223_204438 checkpoint stats
+
+REWRITE 1
+StartTime     :  23 Feb 2021 20:44:43.796 
+ElapsedTime   : 2
+SnapshotSize  : 44MB
+FailCount     : ok
+
+REWRITE 2
+StartTime     :  23 Feb 2021 20:44:49.556 
+ElapsedTime   : 3
+SnapshotSize  : 74MB
+FailCount     : ok
+
+REWRITE 3
+StartTime     :  23 Feb 2021 20:45:00.098 
+ElapsedTime   : 4
+SnapshotSize  : 129MB
+FailCount     : ok
+
+REWRITE 4
+StartTime     :  23 Feb 2021 20:45:17.619 
+ElapsedTime   : 7
+SnapshotSize  : 208MB
+FailCount     : ok
+
+REWRITE 5
+StartTime     :  23 Feb 2021 20:45:44.178 
+ElapsedTime   : 14
+SnapshotSize  : 391MB
+FailCount     : ok
+
+REWRITE 6
+StartTime     :  23 Feb 2021 20:46:36.637 
+ElapsedTime   : 26
+SnapshotSize  : 695MB
+FailCount     : ok
+
+REWRITE 7
+StartTime     :  23 Feb 2021 20:48:04.063 
+ElapsedTime   : 43
+SnapshotSize  : 1180MB
+FailCount     : ok
+
+REWRITE 8
+StartTime     :  23 Feb 2021 20:50:38.886 
+ElapsedTime   : 74
+SnapshotSize  : 1783MB
+FailCount     : ok
+

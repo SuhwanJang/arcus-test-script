@@ -1,0 +1,29 @@
+77783:C 23 Feb 2021 22:48:01.513 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+77783:C 23 Feb 2021 22:48:01.513 # Redis version=6.0.10, bits=64, commit=00000000, modified=0, pid=77783, just started
+77783:C 23 Feb 2021 22:48:01.513 # Configuration loaded
+77783:M 23 Feb 2021 22:48:01.515 * Running mode=standalone, port=11300.
+77783:M 23 Feb 2021 22:48:01.515 # Server initialized
+77783:M 23 Feb 2021 22:48:01.515 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+77783:M 23 Feb 2021 22:48:01.515 * Reading RDB preamble from AOF file...
+77783:M 23 Feb 2021 22:48:01.515 * Loading RDB produced by version 6.0.10
+77783:M 23 Feb 2021 22:48:01.515 * RDB age 84 seconds
+77783:M 23 Feb 2021 22:48:01.515 * RDB memory usage when created 5494.25 Mb
+77783:M 23 Feb 2021 22:48:01.515 * RDB has an AOF tail
+77783:M 23 Feb 2021 22:48:47.231 * Reading the remaining AOF tail...
+77783:M 23 Feb 2021 22:48:57.192 * DB loaded from append only file: 55.677 seconds
+77783:M 23 Feb 2021 22:48:57.192 * Ready to accept connections
+77783:M 23 Feb 2021 22:56:23.990 * Starting automatic rewriting of AOF on 100% growth
+77783:M 23 Feb 2021 22:56:24.129 * Background append only file rewriting started by pid 84176
+77783:M 23 Feb 2021 22:57:34.160 * AOF rewrite child asks to stop sending diffs.
+84176:C 23 Feb 2021 22:57:34.166 * Parent agreed to stop sending diffs. Finalizing AOF...
+84176:C 23 Feb 2021 22:57:34.166 * Concatenating 319.19 MB of AOF diff received from parent.
+84176:C 23 Feb 2021 22:57:38.277 * SYNC append only file rewrite performed
+84176:C 23 Feb 2021 22:57:38.379 * AOF rewrite: 6081 MB of memory used by copy-on-write
+77783:M 23 Feb 2021 22:57:39.150 * Background AOF rewrite terminated with success
+77783:M 23 Feb 2021 22:57:39.170 * Residual parent diff successfully flushed to the rewritten AOF (26.33 MB)
+77783:M 23 Feb 2021 22:57:39.170 * Background AOF rewrite finished successfully
+77783:signal-handler (1614088685) Received SIGTERM scheduling shutdown...
+77783:M 23 Feb 2021 22:58:05.638 # User requested shutdown...
+77783:M 23 Feb 2021 22:58:05.638 * Calling fsync() on the AOF file.
+77783:M 23 Feb 2021 22:58:05.704 * Removing the pid file.
+77783:M 23 Feb 2021 22:58:05.704 # Redis is now ready to exit, bye bye...
