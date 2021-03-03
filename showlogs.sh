@@ -1,10 +1,15 @@
+CASES=( "onlySet" "onlyGetRandom" "onlyGetLongtail" "GetSetRandom(1:9)" "GetSetRandom(3:7)" )
+
 function getResult() {
     array=$(find ./* -name $1)
     for x in ${array[@]}; do
-        for case in "onlySet" "onlyGetRandom" "GetSetRandom(3:7)"; do
-            echo ======= $1-$case
+        for case in ${CASES[@]}; do
+            echo -e "\n========== $1-$case =========="
             cat $x/$case/result.log | grep -A 1 "Hubble*"
             cat $x/$case/memtier.log | grep -A 8 "ALL"
+            #if [[ "$case" != "onlyGetRandom" ]]; then
+            cat $x/$case/result.log | grep -B 5 "System"
+            #fi
         done
     done
 }

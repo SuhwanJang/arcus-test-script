@@ -14,7 +14,7 @@ if [[ "$server_mode" != "off" ]]; then
         else
             break;
         fi
-        sleep 3
+        sleep 10
     done
 fi
 

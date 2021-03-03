@@ -3,13 +3,15 @@ source readconfig.sh
 
 function server_run() {
     # remove data files
-    #if [[ -d "$HOME/ARCUS-DB/" || -d "/data/$user/ARCUS-DB/" ]]; then
-        #$(rm -rf $HOME/ARCUS-DB/ /data/$user/ARCUS-DB/)
-#    fi
-    mkdir $HOME/arcus-memcached/ARCUS-DB /data/$user/ARCUS-DB
-#    if [[ -f "appendonly.aof" ]]; then
-#        $(rm appendonly.aof)
-#    fi
+    if [[ $client_mode == "1" ]]; then
+        echo "remove backup files."
+        if [[ -d "$HOME/arcus-memcached/ARCUS-DB/" || -d "/data/$user/ARCUS-DB/" ]]; then
+            $(rm -rf $HOME/arcus-memcached/ARCUS-DB/* /data/$user/ARCUS-DB/*)
+        fi
+        if [[ -f "appendonly.aof" ]]; then
+            $(rm appendonly.aof)
+        fi
+    fi
     while :
     do
         if [[ $server_type == "arcus" ]]
@@ -113,12 +115,23 @@ do
     logdir="$testdir/$CLIENT_TEST"
     mkdir -p $logdir
     FILENAME=$logdir/result.log
+    printconfig > $FILENAME
 
     echo "Run processes..."
     server_run
-    if [[ "$client_mode" != "1" ]]; then
-        echo "wait for recovery time."
-        sleep 180
+    if [[ "$client_mode" != "1" ]]; then echo "wait for recovery time."
+        sleep 140
+        curitem=$(echo "stats" | nc localhost 11300 | grep "curr_items" | tr -d "\r\n" | awk '{print $3}')
+        maxitem=`expr $keymaximum - $keyminimum + 1`
+        while :
+        do
+            if [ "$curitem" -lt "$maxitem" ]; then
+                echo "curitem : $curitem, maxitem : $maxitem"
+                sleep 10
+            else
+                break;
+            fi
+        done
     fi
     echo -e "2) CLIENT -------------------------------------------------------------------------------" >> $FILENAME
 #    if [[ "$client_mode" != "1" ]]; then client_insertion; fi
@@ -127,7 +140,7 @@ do
 #    if [[ -f "$logdir/appendonly.aof" ]]; then
 #        rm $logdir/appendonly.aof
 #    fi
-    sleep 10
+    sleep 30
 
     echo -e "\nTest done, kill test processes"
     bash stop_test.sh
