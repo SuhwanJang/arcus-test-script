@@ -5,11 +5,6 @@ source readconfig.sh
 FILENAME="$1/cmd_size.log"
 
 # Record checkpoint stats to file.
-if [[ "$server_mode" == "off" ]];then
-    echo "persistence(AOF) off"
-    exit 0
-fi
-
 now="$(date +'%Y%m%d_%H%M%S')"
 echo -e "\n$now recording cmdlog start\n" >> $FILENAME
 
@@ -28,9 +23,6 @@ sum=0
 while :
 do
     sleep 2
-    MPID=$(ssh -T persistence@211.249.63.38 -p ${remote} pgrep memtier)
-    if [[ "${#MPID}" == "0"* ]]; then break; fi
-    
     # record cmdlogsize per 5%
 
     curritem=$(eval "$CMD_CURRITEM")
@@ -47,12 +39,13 @@ do
         fi    
     fi
     if [[ $count -ne 0 && $modulo -ne 0 ]]; then
-        echo "AVG: ($pre_PRCNT%): $(($sum/$count/1024/1024))MB" >> $FILENAME
+        echo "$pre_PRCNT%: $(($sum/$count/1024/1024))MB" >> $FILENAME
         count=0
     fi
 done
 
 if [[ $count -ne 0 ]]; then
-    echo "AVG: ($pre_PRCNT%): $(($sum/$count/1024/1024))MB" >> $FILENAME
+    echo "$pre_PRCNT%: $(($sum/$count/1024/1024))MB" >> $FILENAME
 fi
 
+echo "logger_cmdlog.sh exit"

@@ -1,0 +1,2 @@
+get ops : bash show_logs.sh | grep Totals | awk '{ print $2 }' | cut -d '.' -f 1
+get latency : bash show_logs.sh | grep Totals | awk '{ print $5 }'
