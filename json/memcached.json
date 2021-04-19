@@ -8,7 +8,7 @@
         },
         {
           "port": "11501",
-          "version": "1.12.2"
+          "version": "develop"
         }
       ],
       "enterprise-master": [
@@ -24,11 +24,11 @@
       "enterprise-slave": [
         {
           "port": "11801",
-          "version": "0.8.2-E"
+          "version": "develop"
         },
         {
           "port": "11701",
-          "version": "0.8.2-E"
+          "version": "develop"
         }
       ]
     }
@@ -38,17 +38,17 @@
       "community": [
         {
           "port": "11500",
-          "version": "1.12.1"
+          "version": "1.13.1"
         },
         {
           "port": "11501",
-          "version": "1.12.0"
+          "version": "develop"
         }
       ],
       "enterprise-master": [
         {
           "port": "11800",
-          "version": "develop"
+          "version": "0.9.1-E"
         },
         {
           "port": "11700",
@@ -58,7 +58,7 @@
       "enterprise-slave": [
         {
           "port": "11801",
-          "version": "develop"
+          "version": "0.9.1-E"
         },
         {
           "port": "11701",
@@ -72,31 +72,31 @@
       "community": [
         {
           "port": "11500",
-          "version": "1.11.8"
+          "version": "develop"
         },
         {
           "port": "11501",
-          "version": "1.11.7"
+          "version": "develop"
         }
       ],
       "enterprise-master": [
         {
           "port": "11800",
-          "version": "0.8.2-E"
+          "version": "0.9.1-E"
         },
         {
           "port": "11700",
-          "version": "0.8.2-E"
+          "version": "develop"
         }
       ],
       "enterprise-slave": [
         {
           "port": "11801",
-          "version": "0.8.2-E"
+          "version": "0.9.1-E"
         },
         {
           "port": "11701",
-          "version": "0.8.2-E"
+          "version": "develop"
         }
       ]
     }

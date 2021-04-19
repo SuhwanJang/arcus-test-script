@@ -16,6 +16,7 @@ pool=1
 pool_size=5
 config=""
 client_profile=""
+client_timeout=700
 
 function setting_config {
  ## config file
@@ -23,6 +24,7 @@ function setting_config {
   sed -i "s/^zookeeper=.*/zookeeper=$zookeeper/" $DIR1/$config
   sed -i "s/^service_code=.*/service_code=$service_code/" $DIR1/$config
   sed -i "s/^client_profile=.*/client_profile=$client_profile/" $DIR1/$config
+  sed -i "s/^client_timeout=.*/client_timeout=$client_timeout/" $DIR1/$config
   sed -i "s/^client=.*/client=$client/" $DIR1/$config
   sed -i "s/^rate=.*/rate=$rate/" $DIR1/$config
   sed -i "s/^request=.*/request=$request/" $DIR1/$config
@@ -59,6 +61,11 @@ function run_c_client {
   version=$(get_client_version $host $mtype "c")
   echo "install c-client in $cdir/$version"
   cd $cdir/$version
+  if grep -q THREADED configure.ac; then
+    :
+  else
+    sed -i "263 i AC_DEFINE([THREADED],1,[Enable Zookeeper multi thread mode])" configure.ac
+  fi
   ./config/autorun.sh
   ./configure --prefix=$arcus_dir --enable-zk-integration --with-zookeeper=$arcus_dir
   make clean; make
@@ -67,6 +74,8 @@ function run_c_client {
   make
 
   logpath="$client_logdir/$mtype/c/nohup.out"
+  rm -rf $logpath
+  rm -rf $client_logdir/$mtype/c/test_logs
   echo "run acp-c with nohup. path=$dir host=$host version=$version logpath=$logpath"
   cd $dir
   nohup ./acp -config $config >> $logpath &
@@ -92,13 +101,16 @@ function run_java_client {
 
   javadir=$HOME/arcus-java-client-version
   version=$(get_client_version $host $mtype "java")
+  #version=$(get_client_version $host community "java")
   echo "install java-client in $javadir/$version"
   cd $javadir/$version
-  #mvn clean install -DskipTests=true
+  mvn clean install -DskipTests=true
   cd $dir
   ./compile.bash
 
   logpath="$client_logdir/$mtype/java/nohup.out"
+  rm -rf $logpath
+  rm -rf $client_logdir/$mtype/java/test_logs
   echo "run acp-java with nohup. path=$dir host=$host version=$version logpath=$logpath"
   cd $dir
   nohup ./run.bash -config $config | ts >> $logpath &

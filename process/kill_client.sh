@@ -19,17 +19,14 @@ function kill_c_client {
 
 function kill_java_client {
   mtype=$1
-  pids=($(ps -ef | grep -v "grep" | grep "acp-java/config-arcus-integration.txt" | grep "test" | awk '{ print $2 }'))
+  pids=($(ps -ef | grep -v "grep" | grep "acp-java/config-arcus-integration.txt" | grep "acp -config" | grep $mtype | grep "test" | awk '{ print $2 }'))
   if [ ${#pids[@]} -eq 0 ]; then
     return;
   fi
   for pid in "${pids[@]}"
   do
-    ps_mtype=$(ls -al /proc/$pid/fd/1 | awk '{print $11}')
-    if [[ $ps_mtype == *$mtype* ]]; then
-      result=$(kill -9 $pid)
-      echo "java client is killed. pid=$pid, host=$host, fd=$ps_mtype"
-    fi
+    result=$(kill -9 $pid)
+    echo "java client is killed. pid=$pid, host=$host"
   done
 }
 

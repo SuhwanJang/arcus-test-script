@@ -2,7 +2,7 @@ source ./helper.sh
 function kill_memcached {
   pid=$(ps -ef | grep "./memcached" | grep "$zkensemble" | grep "$1" | grep "$username" | awk '{print $2}')
   if [ -n "$pid" ]; then
-    result=$(kill -9 $pid)
+    result=$(kill $pid)
     echo "memcached is killed. port=$1 host=$host"
   else
     echo "memcached is not found. port=$1 host=$host"

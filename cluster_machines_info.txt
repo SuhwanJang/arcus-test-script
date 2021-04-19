@@ -1,5 +1,5 @@
 Updated 2020.12.12.
 [hostname]   [private ip]   [port forward]
-jam2in-m001  10.34.35.122   11617
+jam2in-m001  10.34.93.160   11617
 jam2in-s001  10.33.145.231  11615
 jam2in-s002  10.33.137.55   11616

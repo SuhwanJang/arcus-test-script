@@ -45,7 +45,7 @@ then
       git checkout develop
     fi
     ./config/autorun.sh
-    ./configure --prefix=$arcus_dir --enable-zk-integration --with-libevent=$arcus_dir --with-zookeeper=$arcus_dir
+    ./configure --prefix=$arcus_dir --enable-zk-integration --with-libevent=$arcus_dir --with-zookeeper=$arcus_dir --with-zk-reconfig
     make
     cd ..
   done
@@ -76,7 +76,7 @@ then
       git checkout memc_repl_dev
     fi
     ./config/autorun.sh
-    ./configure --prefix=$arcus_dir --enable-zk-integration --with-libevent=$arcus_dir --with-zookeeper=$arcus_dir --enable-replication
+    ./configure --prefix=$arcus_dir --enable-zk-integration --with-libevent=$arcus_dir --with-zookeeper=$arcus_dir --enable-replication --with-zk-reconfig
     sed -i "s/^AM_CFLAGS.*/AM_CFLAGS = -fvisibility=hidden -pthread -g -O2 -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -fno-strict-aliasing/g" Makefile
     make
     cd ..
