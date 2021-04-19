@@ -1,102 +1,82 @@
-# 실행 스크립트
-Github 저장소에서 소스코드를 다운로드합니다.   
+## 설정
+- param.json : 서버 및 클라이언트 환경 및 옵션 설정
 ```
-$ git clone -b persistence-test --single-branch https://github.com/jam2in/test-misc.git
-```
-본격적으로 테스트를 진행하기 위해 ```start_test.sh``` 를 구동합니다.   
-server, client와 관련된 속성들이 순차적으로 주어집니다. 옵션을 선택하여 값을 설정합니다.
-```
-$ ./start_test.sh  
-Server type: 1) Arcus  2) Redis : 
-Server mode: 1) Off  2) Async  3) Sync :  
-Threads: 
-Clients: 
-Key-maximum: 0) input  1) 100 Mil  2) 80 Mil  3) 50 Mil  4) 10 Mil :  
-Key-minimum: 0) input  1) 1 :  
-Data size(Bytes): 0) input  1) 50  2) 750 : 
-Test case (multiple select: 1, 2, 3)
-     0) All
-     1) onlySet
-     2) onlyGetRandom
-     3) onlyGetLongtail
-     4) GetSetRandom (1:9)
-     5) GetSetRandom (3:7)
-     6) GetSetRandom (5:5)
-     7) GetSetLongtail (1:9)
-     8) GetSetLongtail (3:7)
-     9) GetSetLongtail (5:5)
-     >> 
-```
-옵션 선택이 끝나면, 진행될 TEST의 총 개수가 보여집니다.   
-혹여 종료되지 못한 이전 TEST의 프로세스가 있다면 이를 정리한 후 테스트를 구동합니다.   l
+{
+  "test_restart": "false", 
+  "engine_config": "/home/persistence/arcus-memcached/engines/default/default_engine.conf",
+  "logpath": "/home/persistence/arcus-memcached/ARCUS-DB",
+  "datapath": "/data/persistence/ARCUS-DB",
+  "client": "persistence@211.249.63.38 -p 11618",
+  "server": "10.34.93.160",
+  "port": 11300,
+  "server_type": "arcus",
+  "server_mode": "async",
+  "threads": 8,
+  "clients": 50,
+  "keyminimum": 1,
+  "keymaximum": 1000000,
+  "run_count": 1,
+  "data_size": 1,
+  "client_mode": "1,2,3,5,6"
+}
 
-하나의 TEST가 진행된 모습입니다.   
-TEST와 관련된 간단한 info가 제시되며, 진행중인 상황을 알 수 있도록 로그를 보여줍니다.   
-각 TEST가 끝나면 관련된 프로세스들을 모두 종료시키도록 하였습니다.   
-```
-======================= START TEST =========================
-Test: arcus-async / onlySet
-Params: threads=8, clients=50, keymaximum=10000000, data_size=750
-Run processes..
- => Arcus started.
- => Memtier started.
- => logger_resource.sh started.
- => logger_chkpt.sh started.
- => logger_cmdlog.sh started.
-
-Test Running..
-
-Test done, kill test processes.
- => arcus(12321) killed.
- 
-=========================TEST END===========================
+- test_restart : 테스트 케이스 완료 후 서버 재구동 여부
+  - true 로 설정하면 set, get 연달아 테스트 시에 set 수행 후 서버 종료 후 데이터 다시 삽입한 이후 get 수행 
+  - false 로 설정하면 set, get 연달아 테스트 시에 set 수행 후 서버 종료하지 않고 get 수행
+- engine_config, logpath, datapath : arcus persistence 설정
+- client : 클라이언트 구동할 장비 정보  
+- server, port : 서버 구동할 장비 ip, port
+- server_type : arcus or redis
+- server_mode : persistence (off, async, sync)
+- threads ~ data_size : memtier_benchmakr 옵션
+- client_mode : 테스트 케이스(숫자별 수행할 테스트는 run_memtier.sh 파일 참고)
 ```
 
-* TEST 도중 중단이 필요한 경우, ```stop-test.sh``` 를 실행하여 관련 프로세스들을 종료시킵니다.
+## 스크립트
+- start_test.sh : 테스트 수행 (서버, 클라이언트, 스크립트 자동 구동/종료) 
+- stop_test.sh : 테스트 종료 (서버, 클라이언트, 스크립트 자동 종료)
+- run_server.sh : 서버 구동
+- run_memtier.sh : 클라이언트 구동
+- logger_chkpt.sh : checkpoint/rewrite 수행 상태 정보 기록
+- logger_cmdlog.sh : cmdlog/appendonly 아이템 5% 증가별 로그 파일 크기 기록
 
-# 데이터 구조
+### 기타
+- show_logs.sh : 테스트별 허블 링크 및 memtier 로그 조회
+- log_to_CSV.sh : memtier 로그를 CSV 파일로 변환.(redis 모니터링이 없어서 초당
+  요청처리량을 보기 위함.)
 
-데이터 흐름의 기준은 다음과 같습니다.
+## 사용법
+### 테스트 수행
+- param.json 수정 후 `bash start_test.sh` 수행.
 
-1.  TEST 수행을 위해 start_test.sh를 실행 후 server와 client의 옵션 값을 설정합니다.   
-2.  서버 설정 값인 server_type과 server_mode, port번호를 run_server.sh에게 넘겨줍니다.     
-2-1.  run_server.sh는 전달 받은 인자를 이용해 server의 타입을 확인하고 해당 서버의 conf 파라미터를 조정하여 구동합니다.   
-3.  서버가 구동된 것을 확인 후, start_test.sh는 클라이언트 설정값을 run_memtier.sh에게 넘겨줍니다.   
-3-1.  run_memtier.sh는 start_test.sh에서 받아온 인자를 이용하여 목적에 맞는 memtier 명령어를 생성합니다.   
-3-2.  run_memtier.sh는 ssh 원격으로 생성된 memtier 명령어를 Client 장비에 전송하여 서버에 부하를 주도록 합니다.     
-4.  start_test.sh는 memtier process가 생성된 것을 확인하면 record_log 함수를 호출하여 로그 기록을 시작합니다.   
-4-1.  로그 관련 shell(logscripts)들은 memtier process의 존재 여부를 확인하며 로그 수행을 지속합니다.   
-5.  start_test.sh는 memtier process가 종료되면 모든 로그를 저장한 뒤, stop_test.sh를 호출하여 테스트 수행에 사용되었던 process들을 종료시킵니다.   
+### 테스트 중지
+- `bash start_stop.sh` 수행.
 
- # 폴더 구조
+## 폴더 구조
 
 ```bash
-├── README.md                            - 리드미 파일
-│
 ├── start_test.sh                        - TEST 실행 파일
 ├── stop_test.sh                         - TEST 중단 파일
 │
-├── run_server.sh                        - server 설정 및 구동 파일
-├── run_memtier.sh                       - client 설정 및 구동 파일
+├── run_server.sh                        - server 구동 파일
+├── run_memtier.sh                       - client 구동 파일
 │
 │
-├── logscripts/                          - TEST 로그 기록 폴더
+├── logscripts/                          
 │   ├── logger_chkpt.sh                  - checkpoint/rewrite 로그 관리
 │   ├── logger_cmdlog.sh                 - cmdlog 로그 관리
-│   └── logger_resource.sh               - system resource 로그 관리
 │
 │
-└── logfile/                             - TEST 로그 저장 폴더
+└── log/                             - TEST 로그 저장 폴더
     └── 2021-02-18/                      - 실행 날짜별 폴더
-        │
         │
         ├── arcus-async_21:38:26/        - TEST SET 수행 단위 폴더 
         │   │
         │   ├── onlySet/                 - 개별 TEST 수행 정보 
-        │   │   ├── memtier.log          - memtier 로그 파일
-        │   │   ├── result.log           - system resource 로그 파일
-        │   │   ├── cmdlog.log           - cmdlog-file size 로그 파일
-        │   │   └── chkpt.log            - checkpoint/rewrite 로그 파일
+        │   │   ├── memtier.log          - memtier_benchmakr 수행 결과 조회
+        │   │   ├── result.log           - param.json 정보, 허블 링크, 구동 명령어 조회
+        │   │   ├── cmdlog.log           - cmdlog/appendonly 파일 크기 조회
+        │   │   └── chkpt.log            - checkpoint/rewrite 수행 상태 조회
         │   │
         │   └── onlyGetRandom/          
         │       ├── memtier.log
@@ -113,44 +93,25 @@ Test done, kill test processes.
                 └── redis.log            - redis 로그 파일
 ```
  
- * TEST 로그 저장소의 디렉토리 구조는 다음과 같습니다.   
-   수행 날짜 (DATE)     
-   └── 진행된 TEST SET (테스트 단위는 한가지 종류의 서버를 대상으로 함 "디렉토리 명: Server_type-Server_mode")     
-        └── 진행된 각각의 TEST ("디렉토리 명: 해당 서버에 대해 구동한 client의 정보")
- 
- 
 ## TEST 로그 기록 
 
 TEST 수행시 기록되는 log의 종류는 다음과 같습니다.
-1) logger_cmdlog.sh   
-: memtier의 item 삽입 진행률(%)에 맞춰 해당 진행률의 평균 cmmand log file 크기를 기록합니다
+1) cmd_size.log 
+: logger_cmdlog.sh 가 memtier의 item 삽입 진행률(%)에 맞춰 해당 진행률의 cmmand log file 크기를 기록합니다
 ```
 20210219_101139 recording cmdlog start
-AVG: (0%): 46MB
-AVG: (5%): 190MB
-AVG: (10%): 578MB
-AVG: (15%): 421MB
-AVG: (20%): 814MB
-AVG: (25%): 1204MB
-AVG: (30%): 1606MB
-AVG: (35%): 270MB
-AVG: (40%): 662MB
-AVG: (45%): 1059MB
-AVG: (50%): 1454MB
-AVG: (55%): 1846MB
-AVG: (60%): 2245MB
-AVG: (65%): 2649MB
-AVG: (70%): 3048MB
-AVG: (75%): 3435MB
-AVG: (80%): 3846MB
-AVG: (85%): 140MB
-AVG: (90%): 529MB
-AVG: (95%): 925MB
-AVG: (100%): 1288MB
+0%: 46MB
+5%: 190MB
+10%: 578MB
+15%: 421MB
+20%: 814MB
+25%: 1204MB
+(중략)
+100%: 1288MB
 ```
 
-2) logger_chkpt.sh
-: checkpoint/rewrite의 발생 여부를 확인하며 checkpoint/rewrite 발생 시,   
+2) chkpt.log
+: logger_chkpt.sh 가 checkpoint/rewrite의 발생 여부를 확인하며 checkpoint/rewrite 발생 시, 
 해당 checkpoint/ rewrite의 정보 (시작시간/ 경과시간/ 스냅샷사이즈/ 실패여부)를 기록합니다.
 ```
 20210219_101139 checkpoint stats
@@ -178,34 +139,42 @@ ElapsedTime   : 44
 SnapshotSize  : 2549MB
 FailCount     : 0
 ```
-3) logger_resource.sh    
-: server와 client process의 CPU(%)와 server의 memory 사용량(K)을 기록합니다.   
-추가적으로 연산에서 수행되었던 server와 client의 명령어와 TEST가 진행되었던 시간의 hubble 주소를 기록합니다.   
+3) result.log    
+수행되었던 server와 client의 명령어와 TEST가 진행되었던 시간의 hubble 주소, param.json 을 기록합니다.   
 ```
-1) SERVER
--------------------------------------------------------------------------------
-Type : arcus
-Mode : sync
-Command :
-/home/persistence/arcus-memcached/memcached -d -v -r -R100 -p 11300 -b 8192 -m 13000 -t 6 -c 4096 -z 10.34.93.160:2170 -E /home/persistence/arcus-memcached/.libs/default_engine.so -X /home/persistence/arcus-memcached/.libs/syslog_logger.so -X /home/persistence/arcus-memcached/.libs/ascii_scrub.so -e config_file=/home/persistence/arcus-memcached/engines/default/default_engine.conf
+Config File : param.json
+{
+  "test_restart": "false",
+  "engine_config": "/home/persistence/arcus-memcached/engines/default/default_engine.conf",
+  "logpath": "/home/persistence/arcus-memcached/ARCUS-DB",
+  "datapath": "/data/persistence/ARCUS-DB",
+  "client": "persistence@211.249.63.38 -p 11618",
+  "server": "10.34.93.160",
+  "port": 11300,
+  "server_type": "arcus",
+  "server_mode": "async",
+  "threads": 8,
+  "clients": 50,
+  "keyminimum": 1,
+  "keymaximum": 1000000,
+  "run_count": 1,
+  "data_size": 1,
+  "client_mode": "1,2,3,5,6"
+}
+1) SERVER----------------------------------------------------
+        Type : arcus
+        Mode : async
+        Command :
+        /home/persistence/arcus-memcached/memcached -d -v -r -R100 -p 11300 -b 8192 -m 11000 -t 6 -c 4096 -z 10.34.93.160:2170 -E /home/persistence/arcus-memcached/.libs/default_engine.so -X /home/persistence/arcus-memcached/.libs/ascii_scrub.so -X /home/persistence/arcus-memcached/.libs/syslog_logger.so -e config_file=/home/persistence/arcus-memcached/engines/default/default_engine.conf
 
-
-2) CLIENT
--------------------------------------------------------------------------------
+2) CLIENT ------------------------------------------------------------------------
 Test : [1] onlySet
 Command :
-ssh -T persistence@211.249.63.38 -p 11618 /home/persistence/memtier_benchmark/memtier_benchmark -s 10.34.93.160 -p 11300 --protocol=memcache_text --threads=8 --clients=50 --data-size=50 --key-pattern=P:P --key-minimum=1 --key-maximum=80000000 --ratio=1:0 --requests=200000 --print-percentiles=90,95,99 --show-config
+ssh -T persistence@211.249.63.38 -p 11618 /home/persistence/memtier_benchmark/memtier_benchmark -s 10.34.93.160 -p 11300 --protocol=memcache_text --threads=8 --clients=50 --data-size=1 --key-pattern=P:P --key-minimum=1 --key-maximum=1000000 --run-count=1 --ratio=1:0 --requests=2500 --print-percentiles=90,95,99 --show-config
 Hubble Url :
-http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?orgId=1&from=1613697099000&to=1613698138000&var-ensemble=jam2in-m001:2170&var-service_code=persistence&var-host=jam2in-m001&var-node=jam2in-m001:11300
-
-
-3) SYSTEM RESOURCE
--------------------------------------------------------------------------------
->> Average server CPU(%) : 228%
->> Average client CPU(%) : 126%
->> TEST_TIME : 2021/02/19 10:11:39 ~ 2021/02/19/ 10:29:04
->> Used MEM(K) : 12147804(K)
+http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?orgId=1&from=1618811710000&to=1618811720000&var-ensemble=jam2in-m001:2170&var-service_code=persistence&var-host=jam2in-m001&var-node=jam2in-m001:11300
 ```
+
 4) memtier.log    
   : memtier와 관련된 로그 파일로 memtier config 정보와 진행률(%)에 따른 Ops, Latency를 확인할 수 있습니다.      
 ```
@@ -272,37 +241,99 @@ Waits           0.00          ---          ---             ---             ---  
 Totals      79293.12         0.00         0.00         5.08692         7.16700         7.99900        13.11900      6880.93
 ```
 
+## 기타 스크립트 사용 용도 
+### show_logs.sh
+```
+$ ls ~/log/2021-04-19/arcus-async-14:55:04
+onlyGetLongtail  onlyGetRandom  onlySet
+```
+특정 날짜와 시간에 수행한 테스트의 각 허블 주소와 memtier 결과를 조회 사용
+수행 전 show_logs.sh 에 날짜와 시간, 서버 타입, 모드, 테스트 정보를 수정해야 함.
+
+```
+$ bash show_logs.sh
+========== arcus-async-14:55:04-onlySet ==========
+Hubble Url :
+http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?orgId=1&from=1618811710000&to=1618811720000&var-ensemble=jam2in-m001:2170&var-service_code=persistence&var-host=jam2in-m001&var-node=jam2in-m001:11300
+ALL STATS
+============================================================================================================================
+Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p90 Latency     p95
+Latency     p99 Latency       KB/sec
+----------------------------------------------------------------------------------------------------------------------------
+Sets       118294.35          ---          ---         3.36064         5.85500
+7.58300        13.31100      4261.47
+Gets            0.00         0.00         0.00             ---             ---
+---             ---         0.00
+Waits           0.00          ---          ---             ---             ---
+---             ---          ---
+Totals     118294.35         0.00         0.00         3.36064         5.85500
+7.58300        13.31100      4261.47
 
 
-## 삽입 연산 선행
+20210419_145514 checkpoint stats
 
-조회 연산과 혼합 연산의 테스트를 진행하기 위해서는 일정 수준의 데이터가     
-server에 삽입되어 있어야 합니다. 이를 위해 조회와 혼합 연산의 경우는 삽입 연산을     
-우선적으로 수행하여 server에 데이터를 충분히 적재했는지 확인 후 테스트를 진행합니다.
 
-## 기타
+20210419_145514 recording cmdlog start
+
+========== arcus-async-14:55:04-onlyGetRandom ==========
+Hubble Url :
+http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?orgId=1&from=1618811770000&to=1618811779000&var-ensemble=jam2in-m001:2170&var-service_code=persistence&var-host=jam2in-m001&var-node=jam2in-m001:11300
+ALL STATS
+============================================================================================================================
+Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p90 Latency     p95
+Latency     p99 Latency       KB/sec
+----------------------------------------------------------------------------------------------------------------------------
+Sets            0.00          ---          ---             ---             ---
+---             ---         0.00
+Gets       150456.85    150456.85         0.00         2.63123         3.79100
+5.05500        10.23900      7901.58
+Waits           0.00          ---          ---             ---             ---
+---             ---          ---
+Totals     150456.85    150456.85         0.00         2.63123         3.79100
+5.05500        10.23900      7901.58
+
+========== arcus-async-14:55:04-onlyGetLongtail ==========
+Hubble Url :
+http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?orgId=1&from=1618811829000&to=1618811837000&var-ensemble=jam2in-m001:2170&var-service_code=persistence&var-host=jam2in-m001&var-node=jam2in-m001:11300
+ALL STATS
+============================================================================================================================
+Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p90 Latency     p95
+Latency     p99 Latency       KB/sec
+----------------------------------------------------------------------------------------------------------------------------
+Sets            0.00          ---          ---             ---             ---
+---             ---         0.00
+Gets       152203.27    152203.27         0.00         2.64213         3.29500
+4.57500        11.39100      8024.19
+Waits           0.00          ---          ---             ---             ---
+---             ---          ---
+Totals     152203.27    152203.27         0.00         2.64213         3.29500
+4.57500        11.39100      8024.19
+```
+
+### log_to_CSV.sh
+```
+$ ls ~/log/2021-04-19/arcus-async-14:55:04
+onlyGetLongtail  onlyGetRandom  onlySet
+```
+특정 날짜와 시간에 수행한 테스트의 memtier 로그를 읽어 CSV 파일로 변환.
+수행 전 log_to_CSV.sh 에 날짜와 시간, 서버 타입, 모드, 테스트 정보를 수정해야 함.
+
+```
+$ bash log_to_CSV.sh
+$ cat csv/arcus-async-14\:55\:04_onlySet.csv
+time ops  latency
+1   145399  3.19
+2   124671  3.74
+3   107190  3.70
+4   108056  3.11
+5   128399  3.16
+6   126361  4.21
+7   94772   4.39
+8   91001   4.39
+```
+
+## 참고
 1) key-median, key-stddev 설정        
  : Longtail 수행에 필요 옵션인 --key-median, --key-stddev 을 설정하지 않으면, default 값으로 key-median 은 key_range의 중앙값, key-stddev 은 key_range/6 으로 설정됩니다. 현재는 default 값으로 설정되도록 되어 있습니다.   
 
-2) 구동중인 테스트의 실시간 ops/latency 진행률은 memtier.log를 보시면 됩니다. (``` $ tail -f [path]/memtier.log ```)
-
-3) 다음 테스트의 서버를 구동하기 전, 기존의 생성된 백업파일(AOF/snapshot file/commandlog file)은 자동으로 삭제됩니다.   
-   따라서 데이터를 복구하는 과정이 필요하다면 백업파일을 따로 보관할 필요가 있습니다.
-
-4) Redis의 경우 rewrite가 일어나는 과정에서 일정수준 이상의 메모리가 확보되어야 하는 것이 확인되었습니다.   
-   이 경우 rewrite가 일어나도 메모리 부족 현상이 발생하지 않도록 적절한 계산이 요구됩니다. 
-   [참조 (redis sync 3:7)](http://1.255.51.181:8088/d/RaYRxEgmz/01-system-resources?from=1612852818101&to=1612857251191&var-ensemble=jam2in-m001:2170&var-service_code=persistence&var-node=jam2in-m001:11300&var-node_host=jam2in-m001&var-node_port=11300&var-host=jam2in-m001&orgId=1)
-   
-
-
-## 개선 사항
-해당 스크립트는 TEST별로 하나의 서버를 구동하고 memtier 연산이 끝난 뒤 해당 서버 프로세스를 종료시켜 server의 재사용을 방지한 구조입니다.
-시간 소요가 많이 요구되는 삽입 연산의 경우 백업 파일을 보관하고 다시 load하는 과정으로 변경할 필요가 있습니다.
-```
-# start_test.sh 
-function client_insertion()
-```
- ## 테스팅
- 
-
-
+2) Redis의 경우 rewrite 수행 시 메모리 증가율이 높아지므로 THP=madvise 설정이 필요합니다.
