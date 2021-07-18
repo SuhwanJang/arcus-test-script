@@ -2,8 +2,7 @@
   "jam2in-m001": [
     {
       "community": [
-        {
-          "port": "11500",
+        { "port": "11500",
           "version": "develop"
         },
         {
@@ -38,7 +37,7 @@
       "community": [
         {
           "port": "11500",
-          "version": "1.13.1"
+          "version": "develop"
         },
         {
           "port": "11501",
@@ -48,7 +47,7 @@
       "enterprise-master": [
         {
           "port": "11800",
-          "version": "0.9.1-E"
+          "version": "develop"
         },
         {
           "port": "11700",
@@ -62,7 +61,7 @@
         },
         {
           "port": "11701",
-          "version": "develop"
+          "version": "0.9.1-E"
         }
       ]
     }
@@ -86,7 +85,7 @@
         },
         {
           "port": "11700",
-          "version": "develop"
+          "version": "0.9.1-E"
         }
       ],
       "enterprise-slave": [
@@ -96,7 +95,7 @@
         },
         {
           "port": "11701",
-          "version": "develop"
+          "version": "0.9.1-E"
         }
       ]
     }

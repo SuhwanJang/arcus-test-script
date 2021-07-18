@@ -28,7 +28,7 @@
       "java": [
         {
           "type": "enterprise",
-          "version": "1.12.1"
+          "version": "develop"
         },
         {
           "type": "community",
@@ -38,11 +38,11 @@
       "c": [
         {
           "type": "enterprise",
-          "version": "1.10.5"
+          "version": "develop"
         },
         {
           "type": "community",
-          "version": "1.10.4"
+          "version": "develop"
         }
       ]
     }
@@ -52,21 +52,21 @@
       "java": [
         {
           "type": "enterprise",
-          "version": "develop"
+          "version": "1.13.2"
         },
         {
           "type": "community",
-          "version": "1.12.0"
+          "version": "1.13.2"
         }
       ],
       "c": [
         {
           "type": "enterprise",
-          "version": "1.13.0"
+          "version": "1.13.1"
         },
         {
           "type": "community",
-          "version": "develop"
+          "version": "1.13.1"
         }
       ]
     }
